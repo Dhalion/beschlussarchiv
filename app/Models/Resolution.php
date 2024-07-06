@@ -66,6 +66,8 @@ class Resolution extends Model
             'tag' => $this->tag,
             'year' => $this->year,
             'text' => $this->text,
+            'category_id' => $this->category->id,
+            'council_id' => $this->council->id,
         ];
     }
 }

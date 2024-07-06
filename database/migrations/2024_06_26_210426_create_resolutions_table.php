@@ -16,9 +16,9 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('title');
             $table->string('tag');
-            $table->integer('year');
+            $table->integer('year')->index();
             $table->longText('text');
-            $table->enum('status', array_map(fn($case) => $case->value, ResolutionStatus::cases()))->default(ResolutionStatus::Draft);
+            $table->enum('status', array_map(fn ($case) => $case->value, ResolutionStatus::cases()))->default(ResolutionStatus::Draft);
             $table->foreignUuid('category_id')->constrained()->restrictOnDelete();
             $table->foreignUuid('council_id')->constrained()->restrictOnDelete();
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
