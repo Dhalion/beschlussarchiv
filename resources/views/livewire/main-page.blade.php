@@ -34,7 +34,7 @@
             </select>
 
         </div>
-        @if (!empty($resolutions))
+        @if (count($resolutions) > 0)
             <h3>
                 Suchergebnisse für "{{ $query }}"
             </h3>
@@ -54,7 +54,7 @@
         @endif
     </div>
 
-    @if (empty($resolutions))
+    @if (count($resolutions) == 0)
         <div id="categories">
             <h3>Categories</h3>
             @foreach ($categories as $category)
