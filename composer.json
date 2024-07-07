@@ -1,9 +1,12 @@
 {
-    "name": "laravel/laravel",
+    "name": "cfalkner/beschlusswiki",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
-    "license": "MIT",
+    "description": "Beschlusswiki mit Suchfunktion",
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
+    "license": "GPL-3.0-only",
     "require": {
         "php": "^8.2",
         "http-interop/http-factory-guzzle": "^1.2",
@@ -11,6 +14,7 @@
         "laravel/horizon": "^5.24",
         "laravel/scout": "^10.10",
         "laravel/tinker": "^2.9",
+        "league/csv": "^9.16.0",
         "livewire/livewire": "^3.5",
         "meilisearch/meilisearch-php": "^1.9"
     },

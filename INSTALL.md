@@ -13,3 +13,9 @@ Now you can start the Dev Container with
 ```bash
 ./vendor/bin/sail up
 ```
+
+## Add CLI XDEBUG
+Add an Alias to debug artisan commands:
+```bash
+alias artisan-debug="php -dxdebug.mode=debug -dxdebug.start_with_request=yes artisan"
+```
