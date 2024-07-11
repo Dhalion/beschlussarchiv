@@ -28,9 +28,8 @@
                         <td>{{ $resolution->created_at->format('Y-m-d') }}</td>
                         <td>
                             <a wire:click="viewResolution({{ $resolution->id }})">Ansehen</a>
-                            <a wire:click="editResolution({{ $resolution->id }})">Bearbeiten</a>
+                            <a href="{{ route('admin.resolutions.edit', $resolution->id) }}">Bearbeiten</a>
                             <a wire:click="deleteResolution({{ $resolution->id }})">Löschen</a>
-
                         </td>
                     </tr>
                 @endforeach

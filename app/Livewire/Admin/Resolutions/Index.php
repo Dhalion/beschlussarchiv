@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Livewire\Admin;
+namespace App\Livewire\Admin\Resolutions;
 
 use Livewire\Component;
 use App\Models\Resolution;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 
-class Resolutions extends Component
+class Index extends Component
 {
     use WithPagination;
 
@@ -23,8 +23,7 @@ class Resolutions extends Component
             ? Resolution::paginate($this->perPage)
             : Resolution::search($this->search)->paginate($this->perPage);
 
-
-        return view('livewire.admin.resolutions', [
+        return view('livewire.admin.resolutions.index', [
             'resolutions' => $resolutions
         ])->layout('layouts.admin');
     }

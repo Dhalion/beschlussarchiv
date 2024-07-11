@@ -2,11 +2,12 @@
 
 use App\Models\Category;
 use App\Livewire\MainPage;
+use App\Livewire\Ckeditor;
+use App\Livewire\Admin\Dashboard;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ResolutionFrontendController;
-use App\Livewire\Admin\Dashboard;
-use App\Livewire\Admin\Resolutions;
-use App\Livewire\Ckeditor;
+use App\Livewire\Admin\Resolutions\Edit;
+use App\Livewire\Admin\Resolutions\Index;
 
 Route::get('/', MainPage::class);
 
@@ -25,6 +26,7 @@ Route::get('/category/{id}', function ($id) {
 // admin routes
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/', Dashboard::class)->name('admin.dashboard');
-    Route::get('/resolutions', Resolutions::class)->name('admin.resolutions');
+    Route::get('/resolutions', Index::class)->name('admin.resolutions.index');
+    Route::get('/resolutions/{id}', Edit::class)->name('admin.resolutions.edit');
     Route::get('/ckeditor', Ckeditor::class)->name('admin.ckeditor');
 });

@@ -23,7 +23,7 @@
             <nav>
                 <ul>
                     <li><a href="{{ route('admin.dashboard') }}" wire:navigate.hover>Dashboard</a></li>
-                    <li><a href="{{ route('admin.resolutions') }}" wire:navigate.hover>Beschlüsse</a></li>
+                    <li><a href="{{ route('admin.resolutions.index') }}" wire:navigate.hover>Beschlüsse</a></li>
                 </ul>
                 @yield('nav')
 
