@@ -1,11 +1,18 @@
 @push('head')
     <meta charset="utf-8">
-    <title>CKEditor 5 Samplesss</title>
+    <title>Beschluss bearbeiten</title>
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/42.0.0/ckeditor5.css">
 @endpush
 
 <div>
+
+    @if (session()->has('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <h2>Beschluss {{ $resolution->id }} bearbeiten</h2>
     <form wire:submit.prevent="update">
         <div id="editor"></div>

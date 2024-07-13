@@ -19,7 +19,10 @@ class Edit extends Component
     {
         $this->resolution->text = $this->editorContent;
         $this->resolution->save();
-        $this->mount($this->resolution->id);
+        // show success message
+        session()->flash('success', 'Resolution updated successfully.');
+        // reload the page
+        return redirect()->route('admin.resolutions.edit', $this->resolution->id);
     }
 
 
