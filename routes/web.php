@@ -6,6 +6,7 @@ use App\Livewire\Ckeditor;
 use App\Livewire\Admin\Dashboard;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ResolutionFrontendController;
+use App\Livewire\Admin\Applicants\Index as ApplicantsIndex;
 use App\Livewire\Admin\Categories\Index as CategoriesIndex;
 use App\Livewire\Admin\Resolutions\Edit;
 use App\Livewire\Admin\Resolutions\Index;
@@ -31,4 +32,6 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/resolutions/{id}', Edit::class)->name('admin.resolutions.edit');
 
     Route::get('/categories', CategoriesIndex::class)->name('admin.categories.index');
+
+    Route::get('/applicants', ApplicantsIndex::class)->name('admin.applicants.index');
 });

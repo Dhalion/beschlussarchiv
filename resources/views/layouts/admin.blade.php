@@ -25,6 +25,7 @@
                     <li><a href="{{ route('admin.dashboard') }}" wire:navigate.hover>Dashboard</a></li>
                     <li><a href="{{ route('admin.resolutions.index') }}" wire:navigate>Beschlüsse</a></li>
                     <li><a href="{{ route('admin.categories.index') }}" wire:navigate>Kategorien</a></li>
+                    <li><a href="{{ route('admin.applicants.index') }}" wire:navigate>Antragsteller*innen</a></li>
                 </ul>
                 @yield('nav')
 
