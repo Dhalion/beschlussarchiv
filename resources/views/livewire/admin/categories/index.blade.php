@@ -49,7 +49,5 @@
             {{ $categories->links() }}
         </div>
 
-        <div>
-        </div>
     </div>
 </div>
