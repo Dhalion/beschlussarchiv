@@ -36,6 +36,7 @@
             SelectAll,
             Underline,
             Undo,
+            Heading,
         } from "ckeditor5";
 
         const editorConfig = {
@@ -47,6 +48,8 @@
                     "bold",
                     "italic",
                     "underline",
+                    "|",
+                    "heading",
                     "|",
                     "bulletedList",
                     "numberedList",
@@ -64,6 +67,7 @@
                 SelectAll,
                 Underline,
                 Undo,
+                Heading,
             ],
             initialData: {!! json_encode($resolution->text) !!},
             list: {
