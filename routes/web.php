@@ -28,5 +28,4 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/', Dashboard::class)->name('admin.dashboard');
     Route::get('/resolutions', Index::class)->name('admin.resolutions.index');
     Route::get('/resolutions/{id}', Edit::class)->name('admin.resolutions.edit');
-    Route::get('/ckeditor', Ckeditor::class)->name('admin.ckeditor');
 });
