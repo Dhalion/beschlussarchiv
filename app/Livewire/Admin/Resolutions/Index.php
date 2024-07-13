@@ -23,6 +23,11 @@ class Index extends Component
         session()->flash('success', 'Resolution deleted successfully.');
     }
 
+    public function createResolution()
+    {
+        return redirect()->route('admin.resolutions.create');
+    }
+
     public function render()
     {
         $resolutions = $this->search == ''

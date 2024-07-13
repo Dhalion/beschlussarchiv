@@ -8,7 +8,7 @@
     @endif
 
     <div>
-        <button wire:click="createResolution">Neuer Beschluss</button>
+        <a href="{{ route('admin.resolutions.create') }}" wire:navigate>Neuen Beschluss anlegen</a>
         <label for="search">Suche:</label>
         <input type="text" wire:model.live="search" placeholder="Suche" id="search">
         <table>
@@ -53,7 +53,5 @@
             </select>
             {{ $resolutions->links() }}
         </div>
-
-        <div>
-        </div>
     </div>
+</div>

@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ResolutionFrontendController;
 use App\Livewire\Admin\Applicants\Index as ApplicantsIndex;
 use App\Livewire\Admin\Categories\Index as CategoriesIndex;
-use App\Livewire\Admin\Resolutions\Edit;
-use App\Livewire\Admin\Resolutions\Index;
+use App\Livewire\Admin\Resolutions\Index as ResolutionsIndex;
+use App\Livewire\Admin\Resolutions\Edit as ResolutionsEdit;
+use App\Livewire\Admin\Resolutions\Create as ResolutionsCreate;
 
 Route::get('/', MainPage::class);
 
@@ -28,8 +29,11 @@ Route::get('/category/{id}', function ($id) {
 // admin routes
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/', Dashboard::class)->name('admin.dashboard');
-    Route::get('/resolutions', Index::class)->name('admin.resolutions.index');
-    Route::get('/resolutions/{id}', Edit::class)->name('admin.resolutions.edit');
+
+    Route::get('/resolutions', ResolutionsIndex::class)->name('admin.resolutions.index');
+    Route::get('/resolutions/create', ResolutionsCreate::class)->name('admin.resolutions.create');
+    Route::get('/resolutions/{id}', ResolutionsEdit::class)->name('admin.resolutions.edit');
+
 
     Route::get('/categories', CategoriesIndex::class)->name('admin.categories.index');
 
