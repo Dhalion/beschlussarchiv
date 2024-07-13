@@ -17,6 +17,12 @@ class Index extends Component
     #[Url(except: '')]
     public $search = '';
 
+    public function deleteResolution($id)
+    {
+        Resolution::findOrFail($id)->delete();
+        session()->flash('success', 'Resolution deleted successfully.');
+    }
+
     public function render()
     {
         $resolutions = $this->search == ''

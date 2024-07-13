@@ -11,7 +11,7 @@ use App\Livewire\Admin\Resolutions\Index;
 
 Route::get('/', MainPage::class);
 
-Route::get('/resolution/{parameter}', [ResolutionFrontendController::class, 'resolveResolution']);
+Route::get('/resolution/{parameter}', [ResolutionFrontendController::class, 'resolveResolution'])->name('resolution');
 
 Route::get('/council/{councilId}/resolution/{parameter}', [ResolutionFrontendController::class, 'resolveResolutionWithCouncil']);
 

@@ -1,9 +1,16 @@
 <div>
     <h2>Beschlüsse</h2>
 
+    @if (session()->has('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <div>
         <button wire:click="createResolution">Neuer Beschluss</button>
-        <input type="text" wire:model.live="search" placeholder="Suche">
+        <label for="search">Suche:</label>
+        <input type="text" wire:model.live="search" placeholder="Suche" id="search">
         <table>
             <thead>
                 <tr>
@@ -27,16 +34,18 @@
                         <td>{{ $resolution->title }}</td>
                         <td>{{ $resolution->created_at->format('Y-m-d') }}</td>
                         <td>
-                            <a wire:click="viewResolution({{ $resolution->id }})">Ansehen</a>
-                            <a href="{{ route('admin.resolutions.edit', $resolution->id) }}">Bearbeiten</a>
-                            <a wire:click="deleteResolution({{ $resolution->id }})">Löschen</a>
+                            <a href="{{ route('resolution', $resolution->id) }}" wire:navigate>Anzeigen</a>
+                            <a href="{{ route('admin.resolutions.edit', $resolution->id) }}" wire:navigate>Bearbeiten</a>
+                            <a href="#" wire:click="deleteResolution('{{ $resolution->id }}')"
+                                wire:confirm="Sind Sie sicher, dass Sie den Beschluss löschen möchten?">Löschen</a>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
         <div class="table-footer-group">
-            <select wire:model.live="perPage">
+            <label for="perPage">Einträge pro Seite:</label>
+            <select wire:model.live="perPage" id="perPage">
                 <option>5</option>
                 <option>10</option>
                 <option>15</option>
