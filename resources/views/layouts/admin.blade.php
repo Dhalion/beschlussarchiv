@@ -20,6 +20,7 @@
 
         <aside class="aside">
             @yield('aside')
+            <a href="{{ route('logout') }}" wire:click.prevent="logout">Logout</a>
             <nav>
                 <ul>
                     <li><a href="{{ route('admin.dashboard') }}" wire:navigate.hover>Dashboard</a></li>

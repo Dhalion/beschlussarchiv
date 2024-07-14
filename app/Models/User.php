@@ -22,6 +22,10 @@ class User extends Authenticatable
         'password',
     ];
 
+    protected $guarded = [
+        'admin'
+    ];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -43,5 +47,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // This is used solely for permissions
+    // each users can have multiple councils allowed
+    //
+    public function councils()
+    {
+        return $this->belongsToMany(Council::class);
     }
 }
