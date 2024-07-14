@@ -8,9 +8,11 @@ use App\Http\Controllers\ResolutionFrontendController;
 use App\Livewire\Admin\Applicants\Index as ApplicantsIndex;
 use App\Livewire\Admin\Auth\Login;
 use App\Livewire\Admin\Categories\Index as CategoriesIndex;
+use App\Livewire\Admin\Councils\Create as CouncilsCreate;
 use App\Livewire\Admin\Resolutions\Index as ResolutionsIndex;
 use App\Livewire\Admin\Resolutions\Edit as ResolutionsEdit;
 use App\Livewire\Admin\Resolutions\Create as ResolutionsCreate;
+use App\Livewire\Admin\Councils\Index as CouncilsIndex;
 
 Route::get('/', MainPage::class);
 
@@ -47,4 +49,7 @@ Route::group([
     Route::get('/categories', CategoriesIndex::class)->name('admin.categories.index');
 
     Route::get('/applicants', ApplicantsIndex::class)->name('admin.applicants.index');
+
+    Route::get('/councils', CouncilsIndex::class)->name('admin.councils.index')->can('viewAny', \App\Models\Council::class);
+    Route::get('/councils/create', CouncilsCreate::class)->name('admin.councils.create')->can('create', \App\Models\Council::class);
 });
