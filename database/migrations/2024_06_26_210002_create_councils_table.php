@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('councils', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name')->unique();
+            $table->string('shortName')->unique();
             $table->boolean('default')->default(false);
             $table->boolean('active')->default(true);
             $table->timestamps();
