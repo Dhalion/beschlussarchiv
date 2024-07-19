@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Applicant;
+use App\Models\Category;
 use App\Models\Resolution;
 
 return [
@@ -146,6 +148,26 @@ return [
                     'year',
                     'status',
                     'category_id',
+                    'council_id',
+                ],
+            ],
+            Category::class => [
+                'searchableAttributes' => [
+                    'name',
+                    'tag',
+                ],
+                'filterableAttributes' => [
+                    'name',
+                    'tag',
+                    'council_id',
+                ],
+            ],
+            Applicant::class => [
+                'searchableAttributes' => [
+                    'name',
+                ],
+                'filterableAttributes' => [
+                    'name',
                     'council_id',
                 ],
             ],
