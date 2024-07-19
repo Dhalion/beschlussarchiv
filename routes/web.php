@@ -41,9 +41,10 @@ Route::group([
 ], function () {
     Route::get('/', Dashboard::class)->name('admin.dashboard');
 
+
     Route::get('/resolutions', ResolutionsIndex::class)->name('admin.resolutions.index');
     Route::get('/resolutions/create', ResolutionsCreate::class)->name('admin.resolutions.create');
-    Route::get('/resolutions/{id}', ResolutionsEdit::class)->name('admin.resolutions.edit');
+    Route::get('/resolutions/{resolutionId}', ResolutionsEdit::class)->name('admin.resolutions.edit');
 
 
     Route::get('/categories', CategoriesIndex::class)->name('admin.categories.index');

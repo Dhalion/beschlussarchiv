@@ -26,7 +26,7 @@ class AdminCouncilsProvider extends ServiceProvider
             if (Auth::check()) {
                 $user = Auth::getUser();
                 $councils = $user->admin ? Council::all() : $user->councils;
-                $view->with('councils', $councils ?? ["abc"]);
+                $view->with('councils', $councils ?? []);
             }
         });
     }
