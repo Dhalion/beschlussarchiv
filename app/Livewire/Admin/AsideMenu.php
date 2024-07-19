@@ -20,6 +20,7 @@ class AsideMenu extends Component
     public function updateCouncilId()
     {
         session(['councilId' => $this->councilId]);
+        $this->dispatch('councilIdUpdated');
     }
 
     private function getUsersDefaultCouncil()
