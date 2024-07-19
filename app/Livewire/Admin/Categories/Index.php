@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Categories;
 
 use App\Models\Category;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -24,11 +25,12 @@ class Index extends Component
     }
 
 
+    #[On('councilIdUpdated')]
     public function render()
     {
         $categories = $this->search == ''
-            ? Category::paginate($this->perPage)
-            : Category::search($this->search)->paginate($this->perPage);
+            ? Category::where("council_id", session("councilId"))->paginate($this->perPage)
+            : Category::search($this->search)->where("council_id", session("councilId"))->paginate($this->perPage);
         return view('livewire.admin.categories.index', [
             'categories' => $categories
         ])->layout('layouts.admin');
