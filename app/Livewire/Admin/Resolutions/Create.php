@@ -6,6 +6,7 @@ use App\Enums\ResolutionStatus;
 use App\Models\Category;
 use App\Models\Council;
 use App\Models\Resolution;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -32,7 +33,15 @@ class Create extends Component
     #[Validate('required|exists:councils,id')]
     public $council_id = '';
 
+    public $usersCouncils = [];
 
+
+    public function mount()
+    {
+        $this->usersCouncils = Auth::user()->admin
+            ? Council::all()
+            : Auth::user()->councils;
+    }
 
     public function store()
     {
@@ -52,7 +61,7 @@ class Create extends Component
     {
         return view('livewire.admin.resolutions.create', [
             "categories" => Category::all(),
-            "councils" => Council::all(),
+            "councils" => $this->usersCouncils
 
         ])->layout('layouts.admin');
     }
