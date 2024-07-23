@@ -21,13 +21,8 @@ class ResolutionSeeder extends Seeder
         $applicants = Applicant::all();
 
         $resolutions->each(function (Resolution $resolution) use ($applicants) {
-            // Ensure we're getting an array of UUID strings
             $randomApplicantUuids = $applicants->random(rand(1, 5))->pluck('id')->all();
 
-            // Debugging: Log the UUIDs to ensure they're what we expect
-            Log::debug('Attaching Applicant UUIDs to Resolution:', $randomApplicantUuids);
-
-            // Attach the applicants using their UUIDs
             $resolution->applicants()->attach($randomApplicantUuids);
         });
     }

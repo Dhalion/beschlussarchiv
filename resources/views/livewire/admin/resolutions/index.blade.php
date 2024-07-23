@@ -19,6 +19,7 @@
                     <th>Tag</th>
                     <th>Titel</th>
                     <th>Erstellt am</th>
+                    <th>Antragsteller*innen</th>
                     <th>Optionen</th>
                 </tr>
             </thead>
@@ -33,6 +34,11 @@
                         <td>{{ "$resolution->year-$resolution->tag" }}</td>
                         <td>{{ $resolution->title }}</td>
                         <td>{{ $resolution->created_at->format('Y-m-d') }}</td>
+                        <td>
+                            @foreach ($resolution->applicants as $applicant)
+                                {{ $applicant->name }}<br>
+                            @endforeach
+                        </td>
                         <td>
                             <a href="{{ route('resolution', $resolution->id) }}" wire:navigate>Anzeigen</a>
                             <a href="{{ route('admin.resolutions.edit', $resolution->id) }}" wire:navigate>Bearbeiten</a>

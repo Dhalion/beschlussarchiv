@@ -13,8 +13,34 @@
         </div>
     @endif
 
-    <h2>Beschluss {{ $resolution->id }} bearbeiten</h2>
+    <h2>Beschluss {{ "$resolution->tag-$resolution->year" }} bearbeiten</h2>
     <form wire:submit.prevent="update">
+        <label for="title">Titel</label>
+        <input type="text" wire:model="title" name="title" id="title">
+
+        <label for="category">Kategorie</label>
+        <select wire:model="category_id" name="category" id="category">
+            @foreach ($categories as $category)
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
+            @endforeach
+        </select>
+
+        <label for="tag">Tag</label>
+        <input type="text" wire:model="tag" name="tag" id="tag">
+
+        <label for="year">Jahr</label>
+        <input type="text" wire:model="year" name="year" id="year">
+
+        <label for="status">Status</label>
+        <select wire:model="status" name="status" id="status">
+            @foreach ($resolutionStates as $state)
+                @php
+                    /** @var App\Enums\ResolutionStatus $state */
+                @endphp
+                <option value="{{ $state }}">{{ $state }}</option>
+            @endforeach
+        </select>
+
         <div id="editor"></div>
         <button id="submit" type="submit">Save</button>
     </form>
