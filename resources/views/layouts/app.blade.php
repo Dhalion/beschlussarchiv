@@ -9,11 +9,14 @@
 
     @stack('head')
 
-    <title>{{ $title ?? 'Beschlusswiki' }}</title>
+    <title>@yield('title', 'Beschlusswiki')</title>
 </head>
 
 <body>
-    {{ $slot }}
+    {{ $slot ?? '' }}
+
+    @yield('content')
+
 
     @stack('scripts')
 </body>

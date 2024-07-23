@@ -24,7 +24,7 @@ Route::get('/council/{councilId}/resolution/{parameter}', [ResolutionFrontendCon
 Route::get('/category/{id}', function ($id) {
     return view('page.category', [
         'category' => Category::findOrFail($id)->load('resolutions')
-    ]);
+    ])->layout('layouts.app');
 });
 
 Route::get('/admin/login', Login::class)->name('login');

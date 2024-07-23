@@ -61,14 +61,7 @@
                 @php
                     /** @var App\Models\Category $category */
                 @endphp
-                <div>
-                    <h3>
-                        {{ $category->name }}
-                    </h3>
-                    <span>
-                        {{ $category->id }}
-                    </span>
-                </div>
+                @include('components.category-card', ['category' => $category])
             @endforeach
 
         </div>
