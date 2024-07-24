@@ -1,7 +1,4 @@
 <div>
-    <h2>
-        Welcome to the main page
-    </h2>
     <div id="main-content" class="sm:w-full lg:w-3/4 mx-auto">
         <div id="search" x-data="{ showAdvancedSearch: {{ $advancedSearch ? 'true' : 'false' }} }"> <input type="text" wire:model.live="query"
                 placeholder="Beschluss suchen">
