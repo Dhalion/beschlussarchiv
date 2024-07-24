@@ -1,13 +1,13 @@
 @php
     /* @var App\Models\Category $category */
 @endphp
-<div class="category-card">
-    <a href="/category/{{ $category->id }}" wire:navigate.hover="category">
-        <img src="{{ asset('images/work-in-progress.png') }}" alt="logo" width="50px">
-        <h3>
+<div id="category-card" class="bg-creme-300 rounded-3xl shadow-lg text-center h-full p-4">
+    <a href="/category/{{ $category->id }}" wire:navigate.hover="category" class="flex flex-col">
+        <img src="{{ asset('images/work-in-progress.png') }}" alt="logo" class="w-1/2 mx-auto p-3">
+        <h3 class="font-bold text-xs h-1/4 p-2 mb-4">
             {{ $category->name }}
         </h3>
-        <span>
+        <span class="text-gray-500 text-sm font-light h-1/4">
             @php
                 $resolutionsCount = $category->resolutions->count();
             @endphp
