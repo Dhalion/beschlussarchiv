@@ -50,7 +50,12 @@
                 </div>
             </div>
 
-            @if (count($resolutions) > 0)
+            @if (count($resolutions) == 0 && $query !== '')
+                <h3>
+                    Keine Suchergebnisse für "{{ $query }}"
+                </h3>
+            @endif
+            @if (count($resolutions) > 0 && $query !== '')
                 <h3>
                     Suchergebnisse für "{{ $query }}"
                 </h3>
@@ -70,7 +75,7 @@
             @endif
         </div>
 
-        @if (count($resolutions) == 0)
+        @if ($query === '')
             <div id="categories"
                 class="h-full text-black mt-10 items-center grid gap-6 grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
                 @foreach ($categories as $category)

@@ -27,7 +27,7 @@ class MainPage extends Component
     public function render()
     {
         $searching = !($this->query == "");
-        $resolutionsQuery = Resolution::query();
+        $resolutionsQuery = $this->query == "" ? Resolution::query() : Resolution::search($this->query);
         if (!empty($this->startYear)) {
             $searching = true;
             $resolutionsQuery->where("year", ">=", $this->startYear);
@@ -50,7 +50,7 @@ class MainPage extends Component
         }
 
         if ($searching) {
-            $resolutions = Resolution::search($this->query)->get();
+            $resolutions = $resolutionsQuery->paginate(10);
         } else {
             $resolutions = null;
         }
