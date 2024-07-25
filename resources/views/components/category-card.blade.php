@@ -8,10 +8,7 @@
             {{ $category->name }}
         </h3>
         <span class="text-gray-500 text-sm font-light h-1/4">
-            @php
-                $resolutionsCount = $category->resolutions->count();
-            @endphp
-            {{ $resolutionsCount }} {{ $resolutionsCount == 1 ? 'resolution' : 'resolutions' }}
+            {{ $category->resolutions_count }} {{ $category->resolutions_count == 1 ? 'resolution' : 'resolutions' }}
         </span>
     </a>
 </div>

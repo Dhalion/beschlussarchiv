@@ -56,7 +56,7 @@ class MainPage extends Component
         }
 
         return view("livewire.main-page", [
-            "categories" => Category::get(),
+            "categories" => Category::withCount('resolutions')->get(),
             "resolutions" => $resolutions,
             "councils" => Council::get(),
             // if any of the filters are set, we are in advanced search mode true
