@@ -195,10 +195,18 @@ export default {
                     secondary: "#ff626b",
 
                     accent: "#fa1464",
+
+                    // dark mode
+                    "dark-primary": "#e30613",
+                    "dark-primary-focus": "#e30613",
+                    "dark-primary-content": "#ffffff",
                 },
             },
         ],
     },
+
+    darkMode: "class",
+
     // Add daisyUI
     plugins: [require("daisyui")],
 };
