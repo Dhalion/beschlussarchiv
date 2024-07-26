@@ -14,13 +14,13 @@ return new class extends Migration
     {
         Schema::create('resolutions', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('title');
-            $table->string('tag');
+            $table->string('title')->index();
+            $table->string('tag')->index();
             $table->integer('year')->index();
             $table->longText('text');
             $table->enum('status', array_map(fn ($case) => $case->value, ResolutionStatus::cases()))->default(ResolutionStatus::Draft);
-            $table->foreignUuid('category_id')->constrained()->restrictOnDelete();
-            $table->foreignUuid('council_id')->constrained()->restrictOnDelete();
+            $table->foreignUuid('category_id')->constrained()->restrictOnDelete()->index();
+            $table->foreignUuid('council_id')->constrained()->restrictOnDelete()->index();
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();

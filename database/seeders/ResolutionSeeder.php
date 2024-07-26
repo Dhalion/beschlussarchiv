@@ -16,7 +16,7 @@ class ResolutionSeeder extends Seeder
      */
     public function run(): void
     {
-        $resolutions = Resolution::factory()->count(30)->create();
+        $resolutions = Resolution::factory()->count(5000)->create();
 
         $applicants = Applicant::all();
 
