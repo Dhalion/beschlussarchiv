@@ -56,10 +56,6 @@
                 <x-icon name="o-arrow-up-on-square" class="w-6" />
                 Zurück zur Übersicht
             </a>
-            <a wire:navigate href="/category/{{ $resolution->category->id }}" class="flex items-center gap-x-1">
-                <x-icon name="o-queue-list" class="w-6" />
-                Zurück zur Kategorie
-            </a>
             <a class="flex items-center gap-x-1">
                 Nächster Beschluss
                 <x-icon name="o-forward" class="w-6" />
