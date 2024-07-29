@@ -45,22 +45,24 @@
         </div>
 
         {{-- ###        RESOLUTION NAVIGATION        ### --}}
-        <div id="resolution-navigation" class="flex flex-row justify-between m-2 text-beere-400">
-            <a>
-                <x-icon name="o-backward" />
-                Vorheriger Beschluss
+        <div id="resolution-navigation" class="flex flex-row justify-between m-2 px-4 pt-2 text-beere-400">
+            <a class="flex items-center gap-x-1">
+                <x-icon name="o-backward" class="w-6" />
+                <span>
+                    Vorheriger Beschluss
+                </span>
             </a>
-            <a wire:navigate href="{{ url()->previous() }}" class="hover:cursor-pointer">
-                <x-icon name="o-arrow-up-on-square" />
+            <a wire:navigate href="{{ url()->previous() }}" class="hover:cursor-pointer flex items-center gap-x-1">
+                <x-icon name="o-arrow-up-on-square" class="w-6" />
                 Zurück zur Übersicht
             </a>
-            <a wire:navigate href="/category/{{ $resolution->category->id }}">
+            <a wire:navigate href="/category/{{ $resolution->category->id }}" class="flex items-center gap-x-1">
+                <x-icon name="o-queue-list" class="w-6" />
                 Zurück zur Kategorie
-                <x-icon name="o-queue-list" />
             </a>
-            <a>
+            <a class="flex items-center gap-x-1">
                 Nächster Beschluss
-                <x-icon name="o-forward" />
+                <x-icon name="o-forward" class="w-6" />
             </a>
         </div>
 
