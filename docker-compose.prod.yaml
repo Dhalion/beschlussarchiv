@@ -81,7 +81,7 @@ services:
 
 networks:
   wiki_network:
-    driver: local
+    driver: bridge
 
 volumes:
   wiki-meilisearch:
