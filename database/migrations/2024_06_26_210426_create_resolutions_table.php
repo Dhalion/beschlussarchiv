@@ -19,10 +19,10 @@ return new class extends Migration
             $table->integer('year')->index();
             $table->longText('text');
             $table->enum('status', array_map(fn ($case) => $case->value, ResolutionStatus::cases()))->default(ResolutionStatus::Draft);
-            $table->foreignUuid('category_id')->constrained()->restrictOnDelete()->index();
-            $table->foreignUuid('council_id')->constrained()->restrictOnDelete()->index();
-            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
-            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignUuid('category_id')->constrained()->restrictOnDelete()->index()->name('fk_resolutions_category_id');
+            $table->foreignUuid('council_id')->constrained()->restrictOnDelete()->index()->name('fk_resolutions_council_id');
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete()->name('fk_resolutions_created_by');
+            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete()->name('fk_resolutions_updated_by');
             $table->timestamps();
         });
     }
