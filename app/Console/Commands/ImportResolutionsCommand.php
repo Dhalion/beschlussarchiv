@@ -25,6 +25,8 @@ class ImportResolutionsCommand extends Command
      */
     protected $description = 'Imports resolutions from a file';
 
+    public string $council;
+
     /**
      * Execute the console command.
      */
@@ -39,7 +41,8 @@ class ImportResolutionsCommand extends Command
         }
 
         if ($council === 'default') {
-            $council = $this->getDefaultCouncilId();
+            $this->info('No council specified, using default council');
+            $this->council = $this->getDefaultCouncilId();
         }
 
         $this->info('Importing resolutions from file: ' . $file);
@@ -50,7 +53,7 @@ class ImportResolutionsCommand extends Command
 
         $this->info('Parsed ' . $parsedResolutions->count() . ' resolutions');
 
-        $importer = new ResolutionImportService($council, date('Y'), $this);
+        $importer = new ResolutionImportService($this->council, date('Y'), $this);
         $importer->importResolutions($parsedResolutions);
     }
 
@@ -75,6 +78,6 @@ class ImportResolutionsCommand extends Command
 
     private function getDefaultCouncilId(): string
     {
-        return Council::where('name', 'Bundesebene')->firstOrFail()->id;
+        return Council::where('default', true)->firstOrFail()->id;
     }
 }

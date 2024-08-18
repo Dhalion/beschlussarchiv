@@ -17,7 +17,8 @@ class ResolutionImportService
 
     public function __construct(
         private string $councilId,
-        private int $year
+        private int $year,
+        private $ctx
     ) {
         $this->councilScope = Council::findOrFail($councilId);
     }
