@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
 
 class SetupApplication extends Command
 {
-    protected $signature = 'wiki:setup';
+    protected $signature = 'archive:setup';
     protected $description = 'Führt die notwendigen Schritte zur Einrichtung der Anwendung aus.';
 
     public function handle()

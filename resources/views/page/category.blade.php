@@ -5,7 +5,7 @@
 
 @extends('layouts.app')
 
-@section('title', $category->name . ' - Beschlusswiki')
+@section('title', $category->name . ' - Beschlussarchiv')
 
 
 @section('content')

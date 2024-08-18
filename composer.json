@@ -1,7 +1,7 @@
 {
-    "name": "cfalkner/beschlusswiki",
+    "name": "cfalkner/beschlussarchiv",
     "type": "project",
-    "description": "Beschlusswiki mit Suchfunktion",
+    "description": "Beschlussarchiv mit Suchfunktion",
     "keywords": [
         "laravel",
         "framework"

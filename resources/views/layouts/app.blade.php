@@ -3,14 +3,14 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="description" content="Beschlusswiki höhö">
+    <meta name="description" content="Beschlussarchiv höhö">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     {{ $head ?? '' }}
 
     @stack('head')
 
-    <title>@yield('title', 'Beschlusswiki')</title>
+    <title>@yield('title', 'Beschlussarchiv')</title>
 </head>
 
 <body>

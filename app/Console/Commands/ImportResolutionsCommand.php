@@ -15,7 +15,7 @@ class ImportResolutionsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'wiki:import {file} {--council=default}';
+    protected $signature = 'archive:import {file} {--council=default}';
 
     /**
      * The console command description.

@@ -3,14 +3,14 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="description" content="Beschlusswiki Administration">
+    <meta name="description" content="Beschlussarchiv Administration">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     {{ $head ?? '' }}
 
     @stack('head')
 
-    <title>{{ $title ?? 'Beschlusswiki Admin' }}</title>
+    <title>{{ $title ?? 'Beschlussarchiv Admin' }}</title>
 </head>
 
 <body>

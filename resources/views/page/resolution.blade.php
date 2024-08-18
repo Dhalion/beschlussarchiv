@@ -4,7 +4,7 @@
 
 @extends('layouts.app')
 
-@section('title', strtoupper($resolution->tag) . "-$resolution->year Beschlusswiki")
+@section('title', strtoupper($resolution->tag) . "-$resolution->year Beschlussarchiv")
 
 @section('content')
     <div id="resolution-page" class="flex flex-col w-full md:w-9/12 lg:w-8/12 xl:w-7/12 xl:mx-auto shadow">
