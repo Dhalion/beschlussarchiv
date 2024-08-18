@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Services\Parsers\JSONResolutionParser;
 use Illuminate\Console\Command;
 use App\Services\ResolutionImportService;
 use App\Contracts\ResolutionImportParserInterface;
@@ -15,7 +16,7 @@ class ImportResolutionsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'archive:import {file} {--council=default}';
+    protected $signature = 'resolution:import {file} {--council=default}';
 
     /**
      * The console command description.
@@ -49,7 +50,7 @@ class ImportResolutionsCommand extends Command
 
         $this->info('Parsed ' . $parsedResolutions->count() . ' resolutions');
 
-        $importer = new ResolutionImportService($council, date('Y'));
+        $importer = new ResolutionImportService($council, date('Y'), $this);
         $importer->importResolutions($parsedResolutions);
     }
 
@@ -64,7 +65,9 @@ class ImportResolutionsCommand extends Command
         $extension = pathinfo($file, PATHINFO_EXTENSION);
 
         if ($extension === 'csv') {
-            return new CSVResolutionParserService();
+            return new CSVResolutionParserService($this);
+        } else if ($extension === 'json') {
+            return new JSONResolutionParser($this);
         }
 
         throw new \Exception('Unsupported file format: ' . $extension);
