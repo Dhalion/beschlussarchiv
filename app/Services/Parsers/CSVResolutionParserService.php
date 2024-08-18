@@ -21,6 +21,8 @@ class CSVResolutionParserService implements ResolutionImportParserInterface
         "Status",
     ];
 
+    public function __construct($context) {}
+
     public function parse(string $file): ParsedResolutionCollection
     {
         $path = storage_path('app/import/' . $file);
