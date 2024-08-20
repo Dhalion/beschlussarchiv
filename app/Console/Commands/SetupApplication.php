@@ -16,6 +16,7 @@ class SetupApplication extends Command
     {
         $this->createImportDirectory();
         $this->createDefaultCouncil();
+        $this->createAdminUser();
         $this->info('Die Anwendung wurde erfolgreich eingerichtet.');
     }
 
@@ -33,6 +34,10 @@ class SetupApplication extends Command
 
     protected function createDefaultCouncil(): void
     {
+        if (Council::where('default', true)->exists()) {
+            $this->info('Default Council existiert bereits.');
+            return;
+        }
         $council = new Council();
         $council->name = 'Bundesebene';
         $council->shortName = 'Bund';
@@ -48,7 +53,10 @@ class SetupApplication extends Command
         }
         $user = new User();
         $user->name = 'admin';
+        $user->email = 'admin@example.com';
         $user->password = "password";
+        $user->admin = true;
+        $user->councils()->attach(Council::where('default', true)->first());
         $user->save();
         $this->info('Admin-Benutzer wurde erstellt.');
     }
