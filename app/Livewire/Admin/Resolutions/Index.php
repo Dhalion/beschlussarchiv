@@ -18,6 +18,17 @@ class Index extends Component
     #[Url(except: '')]
     public $search = '';
 
+    public $headers = [
+        ['key' => 'council.name', 'label' => 'Gremium'],
+        ['key' => 'tag', 'label' => 'Tag'],
+        ['key' => 'title', 'label' => 'Titel'],
+        ['key' => 'created_at', 'label' => 'Erstellt am'],
+        ['key' => 'applicants', 'label' => 'Antragsteller*innen'],
+        ['key' => 'actions', 'label' => 'Aktionen'],
+    ];
+
+    public $sortBy = ['column' => 'tag', 'direction' => 'asc'];
+
     public function deleteResolution($id)
     {
         Resolution::findOrFail($id)->delete();
@@ -33,8 +44,8 @@ class Index extends Component
     public function render()
     {
         $resolutions = $this->search == ''
-            ? Resolution::where("council_id", session('councilId'))->paginate($this->perPage)
-            : Resolution::search($this->search)->where("council_id", session('councilId'))->paginate($this->perPage);
+            ? Resolution::where("council_id", session('councilId'))->orderBy(...array_values($this->sortBy))->paginate($this->perPage)
+            : Resolution::search($this->search)->where("council_id", session('councilId'))->orderBy(...array_values($this->sortBy))->paginate($this->perPage);
 
         return view('livewire.admin.resolutions.index', [
             'resolutions' => $resolutions

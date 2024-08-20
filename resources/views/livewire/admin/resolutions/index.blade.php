@@ -1,5 +1,5 @@
-<div>
-    <h2>Beschlüsse</h2>
+<div class="p-4">
+    <h2 class="text-2xl font-bold">Beschlüsse</h2>
 
     @if (session()->has('success'))
         <div class="alert alert-success">
@@ -7,57 +7,34 @@
         </div>
     @endif
 
-    <div>
-        <a href="{{ route('admin.resolutions.create') }}" wire:navigate>Neuen Beschluss anlegen</a>
-        <label for="search">Suche:</label>
-        <input type="text" wire:model.live="search" placeholder="Suche" id="search">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Gremium</th>
-                    <th>Tag</th>
-                    <th>Titel</th>
-                    <th>Erstellt am</th>
-                    <th>Antragsteller*innen</th>
-                    <th>Optionen</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($resolutions as $resolution)
-                    @php
-                        /** @var App\Models\Resolution $resolution */
-                    @endphp
-                    <tr>
-                        <td>{{ explode('-', $resolution->id)[4] }}</td>
-                        <td>{{ $resolution->council->name }}</td>
-                        <td>{{ "$resolution->year-$resolution->tag" }}</td>
-                        <td>{{ $resolution->title }}</td>
-                        <td>{{ $resolution->created_at->format('Y-m-d') }}</td>
-                        <td>
-                            @foreach ($resolution->applicants as $applicant)
-                                {{ $applicant->name }}<br>
-                            @endforeach
-                        </td>
-                        <td>
-                            <a href="{{ route('resolution', $resolution->id) }}" wire:navigate>Anzeigen</a>
-                            <a href="{{ route('admin.resolutions.edit', $resolution->id) }}" wire:navigate>Bearbeiten</a>
-                            <a href="#" wire:click="deleteResolution('{{ $resolution->id }}')"
-                                wire:confirm="Sind Sie sicher, dass Sie den Beschluss löschen möchten?">Löschen</a>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-        <div class="table-footer-group">
-            <label for="perPage">Einträge pro Seite:</label>
-            <select wire:model.live="perPage" id="perPage">
-                <option>5</option>
-                <option>10</option>
-                <option>15</option>
-                <option>20</option>
-            </select>
-            {{ $resolutions->links() }}
+    <div class="pt-7">
+        <div id="listing-heading" class="pb-5 flex flex-row justify-between">
+            <x-input type="text" icon="o-magnifying-glass" class="input-sm" wire:model.live="search" placeholder="Suche"
+                id="search" />
+            <x-button class="btn-primary btn-sm text-white " icon="o-plus"
+                href="{{ route('admin.resolutions.create') }}" wire:navigate>Neuen Beschluss anlegen</x-button>
         </div>
+        <x-table :headers="$headers" :rows="$resolutions" :sort-by="$sortBy" with-pagination per-page="perPage">
+            @scope('cell_applicants', $resolution)
+                @foreach ($resolution->applicants as $applicant)
+                    <a href="{{ route('admin.applicants.show', $applicant) }}" wire:navigate>{{ $applicant->name }}</a>
+                @endforeach
+                @if ($resolution->applicants->count() === 0)
+                    <span>Keine Antragsteller*innen</span>
+                @endif
+            @endscope
+
+
+            @scope('cell_actions', $resolution)
+                <div class="flex flex-row">
+                    <x-button icon="o-pencil" class="btn-ghost btn-xs"
+                        href="{{ route('admin.resolutions.edit', $resolution) }}" wire:navigate />
+                    <x-button icon="o-trash" class="btn-ghost btn-xs" wire:click="delete({{ $resolution->id }})" />
+                    <x-button icon="o-eye" class="btn-ghost btn-xs" href="{{ route('resolution', $resolution) }}"
+                        wire:navigate />
+                </div>
+            @endscope
+
+        </x-table>
     </div>
 </div>
