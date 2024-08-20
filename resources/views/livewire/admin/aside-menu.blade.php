@@ -1,30 +1,34 @@
-<div>
+<div class="flex flex-col px-5 h-full">
+    <nav class="navigation flex flex-col justify-between h-full">
+        <div class="pt-2">
+            <label for="council-select" class="text-xs">Gremium</label>
+            <x-select id="council-select" wire:model="councilId" wire:change="updateCouncilId" :options="$councils"
+                placeholder="Gremium wählen" class="select-xs label-sm select-bordered">
+            </x-select>
 
-    <div>
-        <span>
-            {{ Auth::user()->name }} ({{ Auth::user()->email }})
-        </span>
-        <a href="{{ route('logout') }}" wire:click.prevent="logout">Logout</a>
-        <span>Gremium: {{ session('councilId') }}</span>
-    </div>
+            <x-menu class="text-base p-0 pt-3">
+                <x-menu-item title="Dashboard" icon="o-home" wire:navigate.hover
+                    href="{{ route('admin.dashboard') }}" />
+                <x-menu-item title="Beschlüsse" icon="o-document-duplicate" wire:navigate.hover
+                    href="{{ route('admin.resolutions.index') }}" />
+                <x-menu-item title="Kategorien" icon="o-folder" wire:navigate.hover
+                    href="{{ route('admin.categories.index') }}" />
+                <x-menu-item title="Antragsteller*innen" icon="o-users" wire:navigate.hover
+                    href="{{ route('admin.applicants.index') }}" />
 
-    <nav>
-        <select id="council-select" wire:model="councilId" wire:change="updateCouncilId">
-            @foreach ($councils as $council)
-                <option value="{{ $council->id }}">{{ $council->name }}</option>
-            @endforeach
-        </select>
-        <ul>
-            <li><a href="{{ route('admin.dashboard') }}" wire:navigate.hover>Dashboard</a></li>
-            <li><a href="{{ route('admin.resolutions.index') }}" wire:navigate>Beschlüsse</a></li>
-            <li><a href="{{ route('admin.categories.index') }}" wire:navigate>Kategorien</a>
-            </li>
-            <li><a href="{{ route('admin.applicants.index') }}" wire:navigate>Antragsteller*innen</a></li>
-            @can('viewAny', App\Models\Council::class)
-                <li><a href="{{ route('admin.councils.index') }}" wire:navigate>Gremien</a></li>
-            @endcan
-        </ul>
-        @yield('nav')
+                @can('viewAny', App\Models\Council::class)
+                    <x-menu-item title="Gremien" icon="o-user-group" wire:navigate.hover
+                        href="{{ route('admin.councils.index') }}" />
+                @endcan
+            </x-menu>
+            @yield('nav')
+        </div>
 
+        <div class="flex flex-col session pb-5">
+            <span>
+                {{ Auth::user()->name }} ({{ Auth::user()->email }})
+            </span>
+            <a href="{{ route('logout') }}" wire:click.prevent="logout">Logout</a>
+        </div>
     </nav>
 </div>

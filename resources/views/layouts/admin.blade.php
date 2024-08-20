@@ -13,26 +13,29 @@
     <title>{{ $title ?? 'Beschlussarchiv Admin' }}</title>
 </head>
 
-<body>
-    <div>
-        <header>
-            @yield('header')
-        </header>
+<body class="flex h-screen">
+    <header>
+        @yield('header')
+    </header>
 
-        <aside class="aside">
-            @livewire('admin.aside-menu')
-        </aside>
-
-        <div class="content">
-            {{ $slot }}
+    <aside class="aside w-1/5 h-full bg-primary-content flex flex-col">
+        <div class="bg-jusorot-400 p-3 w-full h-fit">
+            <h1 class="text-2xl font-bold text-start text-white">Beschlussarchiv</h1>
+            <h2 class="text-base font-bold text-start text-white ">Administration</h2>
         </div>
-        <footer>
+        <div class="flex-grow">
+            @livewire('admin.aside-menu')
+        </div>
+    </aside>
 
-        </footer>
+    <div class="content flex-grow">
+        {{ $slot }}
     </div>
+    <footer>
 
-
-    @stack('scripts')
+    </footer>
 </body>
+
+@stack('scripts')
 
 </html>
