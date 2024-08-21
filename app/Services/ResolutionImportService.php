@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Models\Council;
 use App\Models\Resolution;
 use Dotenv\Util\Regex;
+use Parsedown;
 
 class ResolutionImportService
 {
@@ -36,7 +37,7 @@ class ResolutionImportService
         $resolution->title = $resolutionDTO->title;
         $resolution->tag = $resolutionDTO->tag;
         $resolution->year = $resolutionDTO->year ?? $this->year;
-        $resolution->text = $resolutionDTO->text;
+        $resolution->text = $this->convertTextToHtml($resolutionDTO->text);
         $resolution->category_id = $this->getCategoryId($resolutionDTO->category, $resolutionDTO->tag);
         $resolution->council_id = $this->councilScope->id;
 
@@ -45,9 +46,7 @@ class ResolutionImportService
 
     private function getCategoryId(string $categoryName, string $tag, bool $createIfNotExists = true): string
     {
-        // Tag is like A123 or INI1 or similar
-        // categoryTag is like "A" or "INI"
-        // fetch the letters from the tag until the first number
+
 
         // check if categoryName is uuid, if so, return it
         // category has been mapped already
@@ -55,6 +54,9 @@ class ResolutionImportService
             return $categoryName;
         }
 
+        // Tag is like A123 or INI1 or similar
+        // categoryTag is like "A" or "INI"
+        // fetch the letters from the tag until the first number
         $categoryTag = preg_replace('/[^a-zA-Z]/', '', $tag);
         $category = Category::firstOrCreate([
             'name' => $categoryName,
@@ -63,5 +65,16 @@ class ResolutionImportService
         ]);
 
         return $category->id;
+    }
+
+    private function convertTextToHtml(string $text): string
+    {
+        $mdParser = new Parsedown();
+        $mdParser = $mdParser->setSafeMode(true);
+        $htmlText = $mdParser->text($text);
+        // replace all h1 with h2
+        $htmlText = preg_replace('/<h1>/', '<h2>', $htmlText);
+
+        return $htmlText;
     }
 }
