@@ -48,6 +48,13 @@ class ResolutionImportService
         // Tag is like A123 or INI1 or similar
         // categoryTag is like "A" or "INI"
         // fetch the letters from the tag until the first number
+
+        // check if categoryName is uuid, if so, return it
+        // category has been mapped already
+        if (uuid_is_valid($categoryName)) {
+            return $categoryName;
+        }
+
         $categoryTag = preg_replace('/[^a-zA-Z]/', '', $tag);
         $category = Category::firstOrCreate([
             'name' => $categoryName,
