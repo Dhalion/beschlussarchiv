@@ -56,8 +56,8 @@ class SetupApplication extends Command
         $user->email = 'admin@example.com';
         $user->password = "password";
         $user->admin = true;
-        $user->councils()->attach(Council::where('default', true)->first());
         $user->save();
+        $user->councils()->attach(Council::where('default', true)->first());
         $this->info('Admin-Benutzer wurde erstellt.');
     }
 }
