@@ -1,5 +1,5 @@
 <div>
-    <div id="main-content" class="sm:w-full lg:w-3/4 mx-auto px-5 lg:px-0">
+    <div id="main-content" class="sm:w-full lg:w-3/4 mx-auto px-5 lg:px-0 pb-5">
         <div id="search" x-data="{ showAdvancedSearch: {{ $advancedSearch ? 'true' : 'false' }} }">
             <div id="search-box"
                 class="shadow-lg bg-rosa-300 dark:bg-rosa-200 flex
@@ -60,16 +60,12 @@
                     Suchergebnisse für "{{ $query }}"
                 </h3>
 
-                <div class="search-results">
+                <div class="search-results flex flex-col gap-y-3 mt-3">
                     @foreach ($resolutions as $resolution)
                         @php
                             /** @var App\Models\Resolution $resolution */
                         @endphp
-                        <a href="resolution/{{ $resolution->id }}" class="resolution" wire:navigate.hover="resolution">
-                            <pre>
-                        {{ "[$resolution->year-$resolution->tag]" }} {{ $resolution->title }}
-                    </pre>
-                        </a>
+                        @include('components.resolution-card', ['resolution' => $resolution])
                     @endforeach
                 </div>
             @endif
