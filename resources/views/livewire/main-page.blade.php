@@ -19,31 +19,19 @@
                             <x-carbon-search-advanced class="w-4" />
                         </x-slot:heading>
 
-                        <x-slot:content id="advanced-search" class="px-0">
-                            <input type="number" wire:model.live="startYear" placeholder="Startjahr">
-                            <input type="number" wire:model.live="endYear" placeholder="Endjahr">
-                            <select wire:model.live="categoryId" placeholder="Kategorie">
-                                <option value="">Kategorie</option>
-                                @foreach ($categories as $category)
-                                    @php
-                                        /** @var App\Models\Category $category */
-                                    @endphp
-                                    <option value="{{ $category->id }}">
-                                        {{ $category->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <select wire:model.live="councilId" placeholder="Gremium">
-                                <option value="">Gremium</option>
-                                @foreach ($councils as $council)
-                                    @php
-                                        /** @var App\Models\Council $council */
-                                    @endphp
-                                    <option value="{{ $council->id }}">
-                                        {{ $council->name }}
-                                    </option>
-                                @endforeach
-                            </select>
+                        <x-slot:content id="advanced-search" class="px-0 grid grid-cols-2 gap-2">
+                            <x-input type="number" class="input-sm" wire:model.live="startYear" icon="o-calendar-days"
+                                placeholder="Startjahr" />
+
+                            <x-input type="number" class="input-sm" wire:model.live="endYear" icon="o-calendar-days"
+                                placeholder="Endjahr" />
+
+                            <x-select class="select-sm" wire:model.live="categoryId" :options="$categories"
+                                option-label="tagged_name" placeholder="Kategorie" />
+
+                            <x-select class="select-sm" wire:model.live="councilId" :options="$councils"
+                                placeholder="Gremium" />
+
                         </x-slot:content>
                     </x-collapse>
 
