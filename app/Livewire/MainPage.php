@@ -27,7 +27,9 @@ class MainPage extends Component
     public function render()
     {
         $searching = !($this->query == "");
+        $searchStartTime = microtime(true);
         $resolutionsQuery = $this->query == "" ? Resolution::query() : Resolution::search($this->query);
+        $searchTotalTime = microtime(true) - $searchStartTime;
         if (!empty($this->startYear)) {
             $searching = true;
             $resolutionsQuery->where("year", ">=", $this->startYear);
@@ -59,6 +61,9 @@ class MainPage extends Component
             "categories" => Category::withCount('resolutions')->get(),
             "resolutions" => $resolutions,
             "councils" => Council::get(),
+            // searchTotal Time is in microseconds, we convert it to milliseconds and show 2 decimal places
+            "searchTotalTime" => number_format($searchTotalTime * 1000, 2),
+            "totalResults" => $resolutions->total(),
             // if any of the filters are set, we are in advanced search mode true
             "advancedSearch" => !empty($this->query) || !empty($this->startYear) || !empty($this->endYear) || !empty($this->categoryId) || !empty($this->councilId)
         ]);

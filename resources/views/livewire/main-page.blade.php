@@ -51,16 +51,17 @@
             </div>
 
             @if (count($resolutions) == 0 && $query !== '')
-                <h3>
+                <span class="text-slate-400 text-xs mt-3 pt-5">
                     Keine Suchergebnisse für "{{ $query }}"
-                </h3>
+                </span>
             @endif
             @if (count($resolutions) > 0 && $query !== '')
-                <h3>
-                    Suchergebnisse für "{{ $query }}"
-                </h3>
+                <span class="text-slate-400 text-xs mt-3 pt-5">
+                    Suchergebnisse für "{{ $query }}". {{ $totalResults }} Ergebnisse in {{ $searchTotalTime }}ms
+                    gefunden.
+                </span>
 
-                <div class="search-results flex flex-col gap-y-3 mt-3">
+                <div class="search-results flex flex-col gap-y-3 pt-6">
                     @foreach ($resolutions as $resolution)
                         @php
                             /** @var App\Models\Resolution $resolution */
