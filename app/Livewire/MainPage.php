@@ -11,6 +11,7 @@ use Livewire\Attributes\Url;
 
 class MainPage extends Component
 {
+    const DEFAULT_LOAD_AMOUNT = 10;
 
     #[Url(except: '')]
     public ?string $query = "";
@@ -24,6 +25,21 @@ class MainPage extends Component
     public ?string $councilId = "";
 
     public $advancedSearch = false;
+
+    public $isLoading = false;
+
+    public $amount = self::DEFAULT_LOAD_AMOUNT;
+
+    public function loadMore()
+    {
+        $this->isLoading = true;
+        $this->amount += self::DEFAULT_LOAD_AMOUNT;
+    }
+
+    public function resetLoadAmount()
+    {
+        $this->amount = self::DEFAULT_LOAD_AMOUNT;
+    }
 
 
     public function render()
@@ -57,7 +73,7 @@ class MainPage extends Component
         }
 
         if ($searching) {
-            $resolutions = $resolutionsQuery->paginate(10);
+            $resolutions = $resolutionsQuery->take($this->amount)->get();
         } else {
             $resolutions = null;
         }
@@ -68,11 +84,10 @@ class MainPage extends Component
             "councils" => Council::get(),
             // searchTotal Time is in microseconds, we convert it to milliseconds and show 2 decimal places
             "searchTotalTime" => number_format($searchTotalTime * 1000, 2),
-            "totalResults" => $resolutions ? $resolutions->total() : 0,
+            "totalResults" => $resolutions ? $resolutions->count() : 0,
             "searching" => $searching,
             // if any of the filters are set, we are in advanced search mode true
             "advancedSearch" => $this->advancedSearch,
-
         ]);
     }
 }

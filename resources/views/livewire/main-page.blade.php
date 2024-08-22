@@ -9,7 +9,8 @@
                 </h2>
                 <div id="search-inputs" class="flex flex-col mt-8 xl:mt-10 xl:w-1/2 w-10/12">
 
-                    <input type="text" wire:model.live="query" placeholder="Beschluss suchen"
+                    <input type="text" wire:model.live="query" wire:input="resetLoadAmount"
+                        placeholder="Beschluss suchen"
                         class=" bg-white w-full text-black p-3 rounded-xl shadow-xl border-cool-200 border-2 text-sm focus:outline-none hover:ring hover:ring-beere focus:ring focus:ring-beere focus:scale-105 transition-transform hover:scale-105 duration-300 ease-in-out">
 
                     <x-collapse wire:model="advancedSearch" collapse-plus-minus class="border-none mb-5">
@@ -38,27 +39,42 @@
 
                 </div>
             </div>
+            <div id="search-results" class="flex flex-col justify-center">
 
-            @if ($searching && $totalResults === 0)
-                <span class="text-slate-400 text-xs mt-3 pt-5">
-                    Keine Suchergebnisse für "{{ $query }}"
-                </span>
-            @endif
-            @if ($searching && $totalResults > 0)
-                <span class="text-slate-400 text-xs mt-3 pt-5">
-                    Suchergebnisse für "{{ $query }}". {{ $totalResults }} Ergebnisse in {{ $searchTotalTime }}ms
-                    gefunden.
-                </span>
+                @if ($searching && $totalResults === 0)
+                    <span class="text-slate-400 text-xs mt-3 pt-5">
+                        Keine Suchergebnisse für "{{ $query }}"
+                    </span>
+                @endif
+                @if ($searching && $totalResults > 0)
+                    <span class="text-slate-400 text-xs pt-5">
+                        Suchergebnisse für "{{ $query }}". {{ $totalResults }} Ergebnisse in
+                        {{ $searchTotalTime }}ms
+                        gefunden.
+                    </span>
 
-                <div class="search-results flex flex-col gap-y-3 pt-6">
-                    @foreach ($resolutions as $resolution)
-                        @php
-                            /** @var App\Models\Resolution $resolution */
-                        @endphp
-                        @include('components.resolution-card', ['resolution' => $resolution])
-                    @endforeach
-                </div>
-            @endif
+                    <div class="search-results flex flex-col gap-y-3 pt-6">
+                        @foreach ($resolutions as $resolution)
+                            @php
+                                /** @var App\Models\Resolution $resolution */
+                            @endphp
+                            @include('components.resolution-card', ['resolution' => $resolution])
+                        @endforeach
+                    </div>
+
+                    <x-loading wire:loading class="text-primary loading-lg self-center mt-10" />
+                @endif
+            </div>
+
+            @script
+                <script>
+                    document.addEventListener('scroll', function() {
+                        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+                            @this.call('loadMore');
+                        }
+                    });
+                </script>
+            @endscript
         </div>
 
         @if (!$searching)
@@ -70,7 +86,6 @@
                     @endphp
                     @include('components.category-card', ['category' => $category])
                 @endforeach
-
             </div>
         @endif
     </div>
