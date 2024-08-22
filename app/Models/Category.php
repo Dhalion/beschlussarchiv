@@ -17,6 +17,10 @@ class Category extends Model
         "council_id",
     ];
 
+    protected $appends = [
+        "tagged_name"
+    ];
+
     public function resolutions()
     {
         return $this->hasMany(Resolution::class);
@@ -35,6 +39,11 @@ class Category extends Model
     public function updatedBy()
     {
         return $this->belongsTo(User::class, "updatedBy");
+    }
+
+    public function getTaggedNameAttribute()
+    {
+        return $this->tag . " - " . $this->name;
     }
 
     public function toSearchableArray()
