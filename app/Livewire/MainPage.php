@@ -23,6 +23,8 @@ class MainPage extends Component
     #[Url(except: '')]
     public ?string $councilId = "";
 
+    public $advancedSearch = false;
+
 
     public function render()
     {
@@ -32,22 +34,25 @@ class MainPage extends Component
         $searchTotalTime = microtime(true) - $searchStartTime;
         if (!empty($this->startYear)) {
             $searching = true;
+            $this->advancedSearch = true;
             $resolutionsQuery->where("year", ">=", $this->startYear);
         }
 
         if (!empty($this->endYear)) {
             $searching = true;
+            $this->advancedSearch = true;
             $resolutionsQuery->where("year", "<=", $this->endYear);
         }
 
-        $searching = true;
         if (!empty($this->categoryId)) {
             $searching = true;
+            $this->advancedSearch = true;
             $resolutionsQuery->where("category_id", $this->categoryId);
         }
 
         if (!empty($this->councilId)) {
             $searching = true;
+            $this->advancedSearch = true;
             $resolutionsQuery->where("council_id", $this->councilId);
         }
 
@@ -63,9 +68,11 @@ class MainPage extends Component
             "councils" => Council::get(),
             // searchTotal Time is in microseconds, we convert it to milliseconds and show 2 decimal places
             "searchTotalTime" => number_format($searchTotalTime * 1000, 2),
-            "totalResults" => $resolutions->total(),
+            "totalResults" => $resolutions ? $resolutions->total() : 0,
+            "searching" => $searching,
             // if any of the filters are set, we are in advanced search mode true
-            "advancedSearch" => !empty($this->query) || !empty($this->startYear) || !empty($this->endYear) || !empty($this->categoryId) || !empty($this->councilId)
+            "advancedSearch" => $this->advancedSearch,
+
         ]);
     }
 }

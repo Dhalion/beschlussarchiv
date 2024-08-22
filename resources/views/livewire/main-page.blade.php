@@ -11,7 +11,8 @@
 
                     <input type="text" wire:model.live="query" placeholder="Beschluss suchen"
                         class=" bg-white w-full text-black p-3 rounded-xl shadow-xl border-cool-200 border-2 text-sm focus:outline-none hover:ring hover:ring-beere focus:ring focus:ring-beere focus:scale-105 transition-transform hover:scale-105 duration-300 ease-in-out">
-                    <x-collapse collapse-plus-minus class="border-none mb-5">
+
+                    <x-collapse wire:model="advancedSearch" collapse-plus-minus class="border-none mb-5">
                         <x-slot:heading class="flex flex-row items-center gap-x-2 text-slate-400 text-sm px-1">
                             <span class="text-sm">
                                 Erweiterte Suche
@@ -38,12 +39,12 @@
                 </div>
             </div>
 
-            @if (count($resolutions) == 0 && $query !== '')
+            @if ($searching && $totalResults === 0)
                 <span class="text-slate-400 text-xs mt-3 pt-5">
                     Keine Suchergebnisse für "{{ $query }}"
                 </span>
             @endif
-            @if (count($resolutions) > 0 && $query !== '')
+            @if ($searching && $totalResults > 0)
                 <span class="text-slate-400 text-xs mt-3 pt-5">
                     Suchergebnisse für "{{ $query }}". {{ $totalResults }} Ergebnisse in {{ $searchTotalTime }}ms
                     gefunden.
@@ -60,7 +61,7 @@
             @endif
         </div>
 
-        @if ($query === '')
+        @if (!$searching)
             <div id="categories"
                 class="h-full text-black mt-10 items-center grid gap-6 grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
                 @foreach ($categories as $category)
