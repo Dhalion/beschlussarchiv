@@ -69,6 +69,10 @@ class ResolutionImportService
 
     private function convertTextToHtml(string $text): string
     {
+        if ($this->textIsHtml($text)) {
+            return $text;
+        }
+
         $mdParser = new Parsedown();
         $mdParser = $mdParser->setSafeMode(true);
         $htmlText = $mdParser->text($text);
@@ -76,5 +80,10 @@ class ResolutionImportService
         $htmlText = preg_replace('/<h1>/', '<h2>', $htmlText);
 
         return $htmlText;
+    }
+
+    private function textIsHtml(string $text): bool
+    {
+        return preg_match('/<[^>]*>/', $text) === 1;
     }
 }
