@@ -16,7 +16,7 @@ class ImportResolutionsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'resolution:import {file} {--council=default}';
+    protected $signature = 'resolution:import {file} {--council=default} {--delimiter=} {--year=}';
 
     /**
      * The console command description.
@@ -27,6 +27,9 @@ class ImportResolutionsCommand extends Command
 
     public string $council;
 
+    public string $delimiter;
+    public string $year;
+
     /**
      * Execute the console command.
      */
@@ -34,10 +37,28 @@ class ImportResolutionsCommand extends Command
     {
         $file = $this->argument('file');
         $council = $this->option('council');
+        $this->delimiter = $this->option('delimiter');
+        $this->year = $this->option('year');
 
         if (!$this->fileExists($file)) {
             $this->error('The file does not exist: ' . $file);
             return;
+        }
+
+        $allowedDelimiters = [',', ';', '\t'];
+        if (!empty($delimiter) && !in_array($delimiter, $allowedDelimiters)) {
+            $this->error('Invalid delimiter: ' . $delimiter);
+            return;
+        }
+
+        if (!empty($this->year) && !is_numeric($this->year)) {
+            $this->error('Invalid year: ' . $this->year);
+            return;
+        }
+
+        if ($this->year === null) {
+            $this->warn('No year specified, using current year');
+            $this->year = date('Y');
         }
 
         if ($council === 'default') {
@@ -53,7 +74,7 @@ class ImportResolutionsCommand extends Command
 
         $this->info('Parsed ' . $parsedResolutions->count() . ' resolutions');
 
-        $importer = new ResolutionImportService($this->council, date('Y'), $this);
+        $importer = new ResolutionImportService($this->council, $this->year, $this);
         $importer->importResolutions($parsedResolutions);
     }
 
@@ -68,7 +89,7 @@ class ImportResolutionsCommand extends Command
         $extension = pathinfo($file, PATHINFO_EXTENSION);
 
         if ($extension === 'csv') {
-            return new CSVResolutionParserService($this);
+            return new CSVResolutionParserService($this, $this->delimiter);
         } else if ($extension === 'json') {
             return new JSONResolutionParser($this);
         }
