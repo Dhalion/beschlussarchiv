@@ -1,5 +1,5 @@
-<div>
-    <h2>Kategorien</h2>
+<div class="p-4">
+    <h2 class="text-2xl font-bold">Kategorien</h2>
 
     @if (session()->has('success'))
         <div class="alert alert-success">
@@ -7,47 +7,26 @@
         </div>
     @endif
 
-    <div>
-        <button wire:click="createCategory">Neue Kategorie</button>
-        <label for="search">Suche:</label>
-        <input type="text" wire:model.live="search" placeholder="Suche" id="search">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Gremium</th>
-                    <th>Name</th>
-                    <th>Beschlüsse</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($categories as $category)
-                    @php
-                        /** @var App\Models\Category $category */
-                    @endphp
-                    <tr>
-                        <td>{{ explode('-', $category->id)[4] }}</td>
-                        <td>{{ $category->council->name }}</td>
-                        <td>{{ $category->name }}</td>
-                        <td>{{ $category->resolutions->count() }}</td>
-                        <td>
-                            <a href="#" wire:click="deleteCategory('{{ $category->id }}')"
-                                wire:confirm="Sind Sie sicher, dass Sie die Kategorie löschen möchten?">Löschen</a>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-        <div class="table-footer-group">
-            <label for="perPage">Einträge pro Seite:</label>
-            <select wire:model.live="perPage" id="perPage">
-                <option>5</option>
-                <option>10</option>
-                <option>15</option>
-                <option>20</option>
-            </select>
-            {{ $categories->links() }}
+    <div class="pt-7">
+        <div id="listing-heading" class="pb-5 flex flex-row justify-between">
+            <x-input type="text" icon="o-magnifying-glass" class="input-sm" wire:model.live="search" placeholder="Suche"
+                id="search" />
+            <x-button wire:click="createCategory" class="btn-primary btn-sm text-white">Neue Kategorie
+                anlegen</x-button>
         </div>
-
+        <x-table :headers="$headers" :rows="$categories" :sort-by="$sortBy" with-pagination per-page="perPage">
+            @scope('cell_name', $category)
+                <a href="{{ route('frontend.category', $category->id) }}" wire:navigate>
+                    {{ $category->name }}
+                </a>
+            @endscope
+            @scope('cell_actions', $category)
+                <div class="flex flex-row">
+                    <x-button icon="o-pencil" class="btn-ghost btn-xs" disabled />
+                    <x-button icon="o-trash" class="btn-ghost btn-xs" wire:click="deleteCategory('{{ $category->id }}')"
+                        wire:confirm="Sind Sie sicher, dass Sie die Kategorie löschen möchten?" />
+                </div>
+            @endscope
+        </x-table>
     </div>
 </div>
