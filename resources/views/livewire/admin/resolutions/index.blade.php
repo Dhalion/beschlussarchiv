@@ -30,7 +30,7 @@
                     <x-button icon="o-pencil" class="btn-ghost btn-xs"
                         href="{{ route('admin.resolutions.edit', $resolution) }}" wire:navigate />
                     <x-button icon="o-trash" class="btn-ghost btn-xs" wire:click="delete({{ $resolution->id }})" />
-                    <x-button icon="o-eye" class="btn-ghost btn-xs" href="{{ route('resolution', $resolution) }}"
+                    <x-button icon="o-eye" class="btn-ghost btn-xs" href="{{ route('frontend.resolution', $resolution) }}"
                         wire:navigate />
                 </div>
             @endscope

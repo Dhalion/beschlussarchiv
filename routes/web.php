@@ -14,9 +14,9 @@ use App\Livewire\Admin\Resolutions\Edit as ResolutionsEdit;
 use App\Livewire\Admin\Resolutions\Create as ResolutionsCreate;
 use App\Livewire\Admin\Councils\Index as CouncilsIndex;
 
-Route::get('/', MainPage::class);
+Route::get('/', MainPage::class)->name('frontend.main');
 
-Route::get('/resolution/{parameter}', [ResolutionFrontendController::class, 'resolveResolution'])->name('resolution');
+Route::get('/resolution/{parameter}', [ResolutionFrontendController::class, 'resolveResolution'])->name('frontend.resolution');
 
 Route::get('/council/{councilId}/resolution/{parameter}', [ResolutionFrontendController::class, 'resolveResolutionWithCouncil']);
 
@@ -25,7 +25,7 @@ Route::get('/category/{id}', function ($id) {
     return view('page.category', [
         'category' => Category::findOrFail($id)->load('resolutions')
     ])->layout('layouts.app');
-});
+})->name('frontend.category');
 
 Route::get('/admin/login', Login::class)->name('login');
 Route::get('/admin/logout', function () {
