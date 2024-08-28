@@ -24,6 +24,11 @@
                 @endif
             @endscope
 
+            @scope('cell_tag', $resolution)
+                <x-badge value="{{ $resolution->tag }}" class="border-none p-3 text-center"
+                    style="background-color: {{ $this->getColorFromTag($resolution->tag) }}" />
+            @endscope
+
 
             @scope('cell_actions', $resolution)
                 <div class="flex flex-row">

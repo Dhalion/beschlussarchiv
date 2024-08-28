@@ -40,6 +40,15 @@ class Index extends Component
         return redirect()->route('admin.resolutions.create');
     }
 
+    function getColorFromTag($tag)
+    {
+        $firstLetter = strtoupper(substr($tag, 0, 1));
+        $hash = md5($firstLetter);
+        $color = '#' . substr($hash, 0, 6);
+        return $color;
+    }
+
+
     #[On('councilIdUpdated')]
     public function render()
     {
