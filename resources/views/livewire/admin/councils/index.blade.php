@@ -1,5 +1,5 @@
-<div>
-    <h2>Gremien</h2>
+<div class="p-4">
+    <h2 class="text-2xl font-bold">Gremien</h2>
 
     @if (session()->has('success'))
         <div class="alert alert-success">
@@ -7,54 +7,30 @@
         </div>
     @endif
 
-    <div>
-        @can('create', App\Models\Council::class)
-            <a href="{{ route('admin.councils.create') }}" wire:navigate>Neues Gremium anlegen</a>
-        @endcan
-        <label for="search">Suche:</label>
-        <input type="text" wire:model.live="search" placeholder="Suche" id="search">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Beschlüsse</th>
-                    <th>Kategorien</th>
-                    <th>Antragssteller*innen</th>
-
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($councils as $council)
-                    @php
-                        /** @var App\Models\Council $council */
-                    @endphp
-                    <tr>
-                        <td>{{ explode('-', $council->id)[4] }}</td>
-                        <td>{{ $council->name }}</td>
-                        <td>{{ $council->resolutions->count() }}</td>
-                        <td>{{ $council->categories->count() }}</td>
-                        <td>{{ $council->applicants->count() }}</td>
-                        <td>
-                            <a href="#">Bearbeiten</a>
-                        </td>
-                        <td>
-                            <a href="#" wire:click="deleteCouncil('{{ $council->id }}')"
-                                wire:confirm="Sind Sie sicher, dass Sie das Gremium löschen möchten?">Löschen</a>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-        <div class="table-footer-group">
-            <label for="perPage">Einträge pro Seite:</label>
-            <select wire:model.live="perPage" id="perPage">
-                <option>5</option>
-                <option>10</option>
-                <option>15</option>
-                <option>20</option </select>
-                {{ $councils->links() }}
+    <div class="pt-7">
+        <div id="listing-heading" class="pb-5 flex flex-row justify-between">
+            <x-input type="text" icon="o-magnifying-glass" class="input-sm" wire:model.live="search" placeholder="Suche"
+                id="search" />
+            @can('create', App\Models\Council::class)
+                <x-button href="{{ route('admin.councils.create') }}" label="Neues Gremium anlegen"
+                    class="btn-primary btn-sm text-white" wire:navigate />
+            @endcan
         </div>
+
+        <x-table :headers="$headers" :rows="$councils" :sort-by="$sortBy" with-pagination per-page="perPage">
+            @scope('cell_actions', $council)
+                <div class="flex flex-row">
+                    @can('update', $council)
+                        <x-button disabled icon="o-pencil" class="btn-ghost btn-xs" />
+                    @endcan
+                    @can('delete', $council)
+                        <x-button icon="o-trash" class="btn-ghost btn-xs" wire:click="deleteCouncil('{{ $council->id }}')"
+                            wire:confirm="Sind Sie sicher, dass Sie das Gremium löschen möchten?" />
+                    @endcan
+                </div>
+            @endscope
+        </x-table>
+
 
     </div>
 </div>

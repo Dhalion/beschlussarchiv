@@ -17,6 +17,16 @@ class Index extends Component
     #[Url(except: '')]
     public $search = '';
 
+    public $headers = [
+        ['key' => 'name', 'label' => 'Name'],
+        ['key' => 'resolutions_count', 'label' => 'Beschlüsse'],
+        ['key' => 'categories_count', 'label' => 'Kategorien'],
+        ['key' => 'applicants_count', 'label' => 'Antragsteller*innen'],
+        ['key' => 'actions', 'label' => 'Aktionen'],
+    ];
+
+    public $sortBy = ['column' => 'name', 'direction' => 'asc'];
+
 
     public function deleteCouncil($id)
     {
@@ -27,7 +37,11 @@ class Index extends Component
     public function render()
     {
         return view('livewire.admin.councils.index', [
-            'councils' => Council::paginate($this->perPage)
+            'councils' => Council::withCount("applicants")
+                ->withCount("categories")
+                ->withCount("resolutions")
+                ->orderBy(...array_values($this->sortBy))
+                ->paginate($this->perPage)
         ])->layout('layouts.admin');
     }
 }
