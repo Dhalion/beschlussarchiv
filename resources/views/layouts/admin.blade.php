@@ -13,12 +13,12 @@
     <title>{{ $title ?? 'Beschlussarchiv Admin' }}</title>
 </head>
 
-<body class="flex h-screen">
+<body class="flex">
     <header>
         @yield('header')
     </header>
 
-    <aside class="aside w-1/5 h-full bg-primary-content flex flex-col">
+    <aside class="aside w-1/5 h-screen bg-primary-content flex flex-col sticky top-0">
         <div class="bg-jusorot-400 p-3 w-full h-fit">
             <h1 class="text-2xl font-bold text-start text-white">Beschlussarchiv</h1>
             <h2 class="text-base font-bold text-start text-white ">Administration</h2>
