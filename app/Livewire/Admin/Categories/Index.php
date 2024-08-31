@@ -3,14 +3,18 @@
 namespace App\Livewire\Admin\Categories;
 
 use App\Models\Category;
+use App\Models\Council;
+use Illuminate\Database\Eloquent\Collection;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Mary\Traits\Toast;
 
 class Index extends Component
 {
-    use WithPagination;
+    use WithPagination, Toast;
 
     #[Url(except: '')]
     public $perPage = 10;
@@ -28,10 +32,75 @@ class Index extends Component
 
     public $sortBy = ['column' => 'name', 'direction' => 'asc'];
 
+    public bool $showCreateModal, $showDeleteModal = false;
+    public string $name, $tag = '';
+
+    public ?Category $categoryToDelete = null;
+
+    public string $categoryToMoveResolutionsTo = '';
+    public Collection $possibleDestinationCategories;
+
+    public function initDeletion(string $categoryId)
+    {
+        $category = Category::withCount("resolutions")->findOrFail($categoryId);
+        if ($category->resolutions_count > 0) {
+            $this->possibleDestinationCategories = Category::where("council_id", session("councilId"))
+                ->where("id", "<>", $categoryId)
+                ->get();
+        }
+
+        $this->categoryToDelete = $category;
+        $this->showDeleteModal = true;
+    }
+
     public function deleteCategory($id)
     {
+        if ($this->categoryToMoveResolutionsTo) {
+            $category = Category::findOrFail($id);
+            $category->resolutions()->update([
+                'category_id' => $this->categoryToMoveResolutionsTo
+            ]);
+        }
         Category::findOrFail($id)->delete();
-        session()->flash('success', 'Category deleted successfully.');
+        $this->toast(
+            title: 'Kategorie gelöscht',
+            description: 'Die Kategorie wurde erfolgreich gelöscht.',
+            type: 'success',
+            position: 'top-right',
+            icon: 'o-check-circle',
+            timeout: 3000
+        );
+        $this->showDeleteModal = false;
+    }
+
+    public function storeCategory()
+    {
+        $councilId = session("councilId");
+        $this->validate([
+            'name' => 'required|string',
+            'tag' => 'required|string',
+        ]);
+        Category::create([
+            'name' => $this->name,
+            'tag' => $this->tag,
+            'council_id' => $councilId,
+        ]);
+        $this->showCreateModal = false;
+        $this->toast(
+            title: 'Kateogrie erstellt',
+            description: 'Die Kategorie wurde erfolgreich erstellt.',
+            type: 'success',
+            position: 'top-right',
+            icon: 'o-check-circle',
+            timeout: 3000
+        );
+    }
+
+    #[Computed]
+    public function getCouncilName(): string
+    {
+        $councilId = session("councilId");
+        return $councilId ? Council::findOrFail($councilId)->name : 'Nicht gefunden';
     }
 
 
