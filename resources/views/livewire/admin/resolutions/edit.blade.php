@@ -17,7 +17,11 @@
 
     <x-form wire:submit.prevent="update">
         <div id="heading" class="flex justify-between">
-            <h2 class="text-2xl font-bold">Beschluss {{ "$resolution->tag-$resolution->year" }} bearbeiten</h2>
+            <div class="flex gap-x-2 items-center">
+                <h2 class="text-2xl font-bold">Beschluss {{ "$resolution->tag-$resolution->year" }} bearbeiten</h2>
+                <x-icon name="o-eye" class="cursor-pointer w-6" wire:navigate
+                    href="{{ route('frontend.resolution', $resolution) }}" />
+            </div>
             <x-button id="submit" type="submit" label="Beschluss Speichern" class="btn-primary text-white"
                 spinner="update" />
         </div>
