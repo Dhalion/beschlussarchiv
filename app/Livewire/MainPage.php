@@ -79,7 +79,9 @@ class MainPage extends Component
         }
 
         return view("livewire.main-page", [
-            "categories" => Category::withCount('resolutions')->get(),
+            "categories" => Category::withCount('resolutions')
+                ->orderBy('tag')
+                ->get(),
             "resolutions" => $resolutions,
             "councils" => Council::get(),
             // searchTotal Time is in microseconds, we convert it to milliseconds and show 2 decimal places
