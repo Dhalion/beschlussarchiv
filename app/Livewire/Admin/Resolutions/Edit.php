@@ -7,9 +7,13 @@ use App\Models\Category;
 use App\Models\Resolution;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Mary\Traits\Toast;
 
 class Edit extends Component
 {
+
+    use Toast;
+
     public $resolution;
     public $title;
     public $tag;
@@ -36,8 +40,11 @@ class Edit extends Component
         $this->category_id = $this->resolution->category_id;
         $this->council_id = $this->resolution->council_id;
         $this->applicants = $this->resolution->applicants->pluck('id')->toArray();
+        $this->editorContent = $this->resolution->text;
 
-        $this->categories = Category::where("council_id", $this->resolution->council_id)->get();
+        $this->categories = Category::where("council_id", $this->resolution->council_id)
+            ->orderBy('name')
+            ->get();
     }
 
     public function update()
@@ -53,8 +60,7 @@ class Edit extends Component
         $this->resolution->updated_at = now();
 
         $this->resolution->save();
-        // show success message
-        session()->flash('success', 'Resolution updated successfully.');
+        $this->toast('success', 'Beschluss aktualisiert', 'Der Beschluss wurde erfolgreich aktualisiert.');
         // reload the page
         return redirect()->route('admin.resolutions.edit', $this->resolution->id);
     }

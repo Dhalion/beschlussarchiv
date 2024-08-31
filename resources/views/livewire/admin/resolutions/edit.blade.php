@@ -2,10 +2,10 @@
     <meta charset="utf-8">
     <title>Beschluss bearbeiten</title>
     <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/42.0.0/ckeditor5.css">
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.css" />
 @endpush
 
-<div>
+<div class="p-4">
 
     @if (session()->has('success'))
         <div class="alert alert-success">
@@ -13,65 +13,55 @@
         </div>
     @endif
 
-    <h2>Beschluss {{ "$resolution->tag-$resolution->year" }} bearbeiten</h2>
-    <form wire:submit.prevent="update">
-        <label for="title">Titel</label>
-        <input type="text" wire:model="title" name="title" id="title">
 
-        <label for="category">Kategorie</label>
-        <select wire:model="category_id" name="category" id="category">
-            @foreach ($categories as $category)
-                <option value="{{ $category->id }}">{{ $category->name }}</option>
-            @endforeach
-        </select>
 
-        <label for="tag">Tag</label>
-        <input type="text" wire:model="tag" name="tag" id="tag">
+    <x-form wire:submit.prevent="update">
+        <div id="heading" class="flex justify-between">
+            <h2 class="text-2xl font-bold">Beschluss {{ "$resolution->tag-$resolution->year" }} bearbeiten</h2>
+            <x-button id="submit" type="submit" label="Beschluss Speichern" class="btn-primary text-white"
+                spinner="update" />
+        </div>
 
-        <label for="year">Jahr</label>
-        <input type="text" wire:model="year" name="year" id="year">
+        <div id="form-content" class=" grid grid-cols-2 gap-3">
 
-        <label for="status">Status</label>
-        <select wire:model="status" name="status" id="status">
-            @foreach ($resolutionStates as $state)
-                @php
-                    /** @var App\Enums\ResolutionStatus $state */
-                @endphp
-                <option value="{{ $state }}">{{ $state }}</option>
-            @endforeach
-        </select>
 
-        <div id="editor"></div>
-        <button id="submit" type="submit">Save</button>
-    </form>
+            <div class="col-span-2">
+                <x-input type="text" label="Titel" wire:model="title" id="title" />
+            </div>
+
+            <x-select label="Kategorie" wire:model="category_id" name="category" :options="$categories" id="category"
+                option-label="tagged_name">
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
+            </x-select>
+
+            <div class="col-start-1 flex justify-between">
+                <x-input type="text" label="Tag" wire:model="tag" name="tag" id="tag" />
+                <x-input type="text" label="Jahr" wire:model="year" name="year" id="year" />
+            </div>
+
+            <x-select label="Status" wire:model="status" name="status" :options="$resolutionStates" id="status">
+                @foreach ($resolutionStates as $state)
+                    @php
+                        /** @var App\Enums\ResolutionStatus $state */
+                    @endphp
+                    <option value="{{ $state }}">{{ $state }}</option>
+                @endforeach
+            </x-select>
+
+            <div wire:ignore class="col-span-2">
+                <textarea id="editor"></textarea>
+            </div>
+        </div>
+
+
+    </x-form>
+    <x-toast />
 </div>
-
 @push('scripts')
-    <script type="importmap">
-        {
-            "imports": {
-                "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/42.0.0/ckeditor5.js",
-                "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/42.0.0/"
-            }
-        }
-    </script>
-    {{-- <script type="text/javascript" src="{{ URL::asset('assets/vendor/ckeditor.js') }}"></script> --}}
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
     <script type="module">
-        import {
-            ClassicEditor,
-            Bold,
-            Essentials,
-            GeneralHtmlSupport,
-            Italic,
-            Link,
-            ListProperties,
-            Paragraph,
-            SelectAll,
-            Underline,
-            Undo,
-            Heading,
-        } from "ckeditor5";
-
         const editorConfig = {
             toolbar: {
                 items: [
@@ -89,19 +79,6 @@
                 ],
                 shouldNotGroupWhenFull: false,
             },
-            plugins: [
-                Bold,
-                Essentials,
-                GeneralHtmlSupport,
-                Italic,
-                Link,
-                ListProperties,
-                Paragraph,
-                SelectAll,
-                Underline,
-                Undo,
-                Heading,
-            ],
             initialData: {!! json_encode($resolution->text) !!},
             list: {
                 properties: {
@@ -110,9 +87,7 @@
                     reversed: true,
                 },
             },
-            placeholder: "Type or paste your content here!",
         };
-
         ClassicEditor.create(document.querySelector("#editor"), editorConfig).then(
             (editor) => {
                 window.editor = editor;
@@ -122,7 +97,5 @@
                 });
             }
         );
-
-        // Assuming there is a <button id="submit">Submit</button> in your application.
     </script>
 @endpush
