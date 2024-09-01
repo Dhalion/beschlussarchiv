@@ -37,7 +37,7 @@ class ImportResolutionsCommand extends Command
     {
         $file = $this->argument('file');
         $council = $this->option('council');
-        $this->delimiter = $this->option('delimiter');
+        $this->delimiter = $this->option('delimiter') ?? ',';
         $this->year = $this->option('year');
 
         if (!$this->fileExists($file)) {
