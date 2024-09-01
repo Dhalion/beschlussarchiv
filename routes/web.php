@@ -13,6 +13,7 @@ use App\Livewire\Admin\Resolutions\Index as ResolutionsIndex;
 use App\Livewire\Admin\Resolutions\Edit as ResolutionsEdit;
 use App\Livewire\Admin\Resolutions\Create as ResolutionsCreate;
 use App\Livewire\Admin\Councils\Index as CouncilsIndex;
+use App\Models\Applicant;
 
 Route::get('/', MainPage::class)->name('frontend.main');
 
@@ -26,6 +27,16 @@ Route::get('/category/{id}', function ($id) {
         'category' => Category::findOrFail($id)->load('resolutions')
     ])->layout('layouts.app');
 })->name('frontend.category');
+
+
+Route::get('/applicant/{id}', function ($id) {
+    return view('page.applicant', [
+        'applicant' => Applicant::findOrFail($id)
+            ->load('resolutions')
+    ])->layout('layouts.app');
+})->name('frontend.applicant');
+
+
 
 Route::get('/admin/login', Login::class)->name('login');
 Route::get('/admin/logout', function () {
