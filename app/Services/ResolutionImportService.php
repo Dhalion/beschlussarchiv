@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\DTO\ParsedResolution;
 use App\DTO\ParsedResolutionCollection;
+use App\Models\Applicant;
 use App\Models\Category;
 use App\Models\Council;
 use App\Models\Resolution;
@@ -40,14 +41,17 @@ class ResolutionImportService
         $resolution->text = $this->convertTextToHtml($resolutionDTO->text);
         $resolution->category_id = $this->getCategoryId($resolutionDTO->category, $resolutionDTO->tag);
         $resolution->council_id = $this->councilScope->id;
-
         $resolution->save();
+
+        foreach ($resolutionDTO->applicants as $applicant) {
+            $resolution->applicants()->attach($this->getApplicantId($applicant));
+        }
+
+        $this->ctx->info('Resolution ' . $resolution->title . ' imported successfully');
     }
 
     private function getCategoryId(string $categoryName, string $tag, bool $createIfNotExists = true): string
     {
-
-
         // check if categoryName is uuid, if so, return it
         // category has been mapped already
         if (uuid_is_valid($categoryName)) {
@@ -65,6 +69,22 @@ class ResolutionImportService
         ]);
 
         return $category->id;
+    }
+
+    private function getApplicantId(string $applicantName): string
+    {
+        // check if applicantName is uuid, if so, return it
+        if (uuid_is_valid($applicantName)) {
+            return $applicantName;
+        }
+
+        // fetch the applicant by name
+        $applicant = Applicant::firstOrCreate([
+            'name' => $applicantName,
+            'council_id' => $this->councilScope->id,
+        ]);
+
+        return $applicant->id;
     }
 
     private function convertTextToHtml(string $text): string
