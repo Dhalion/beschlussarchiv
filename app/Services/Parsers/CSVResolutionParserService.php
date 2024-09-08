@@ -21,17 +21,23 @@ class CSVResolutionParserService implements ResolutionImportParserInterface
         "Status",
     ];
 
+    public function __construct(private $context, private ?string $delimiter = ",") {}
+
     public function parse(string $file): ParsedResolutionCollection
     {
         $path = storage_path('app/import/' . $file);
 
         $csv = Reader::createFromPath($path, 'r');
         $csv->setHeaderOffset(0);
+        $csv->setDelimiter($this->delimiter);
 
         $header = $csv->getHeader();
 
-        if (!$this->validateHeader($header)) {
-            throw new Exception('Invalid CSV file');
+
+        $missingColumns = $this->validateHeader($header);
+        if (!empty($missingColumns)) {
+            $this->context->error('Missing columns in CSV file: ' . implode(', ', $missingColumns));
+            return new ParsedResolutionCollection();
         }
 
         $records = $csv->getRecords();
@@ -80,10 +86,10 @@ class CSVResolutionParserService implements ResolutionImportParserInterface
         return trim($category);
     }
 
-    private function validateHeader(array $header): bool
+    private function validateHeader(array $header): array
     {
-        // check if all required columns are present in the header array
-        return count(array_diff(self::REQUIRED_COLUMNS, $header)) === 0;
+        // check if all required columns are present in the header array. Return an array of missing columns
+        return array_diff(self::REQUIRED_COLUMNS, $header);
     }
 
     private function validateRow(array $row): bool

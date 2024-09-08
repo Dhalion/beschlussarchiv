@@ -11,7 +11,8 @@ class Council extends Model
     use HasFactory, HasUuids;
 
     protected $fillable = [
-        "name"
+        "name",
+        "shortName",
     ];
 
     public function resolutions()

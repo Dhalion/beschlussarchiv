@@ -1,0 +1,15 @@
+beschlussarchiv.cfalkner.dev
+{
+        root * /var/www/share/beschlussarchiv/current/public
+        encode zstd gzip
+        php_fastcgi unix//run/php/php8.3-fpm.sock
+        file_server
+
+        basic_auth / {
+                user $2a$14$iPupa72NBjqoCXcvOYZT.OblxlW.nxFfl7Pq23AXq39beKZswLgD.
+        }
+
+        log {
+                output file /var/www/share/beschlussarchiv/shared/caddy-log.log
+        }
+}

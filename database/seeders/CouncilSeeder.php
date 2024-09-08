@@ -35,7 +35,19 @@ class CouncilSeeder extends Seeder
         foreach ($names as $name) {
             Council::create([
                 "name" => $name,
+                "shortName" => $this->getShortName($name),
             ]);
         }
+    }
+
+    // returns string with capitalized first letters of each word
+    private function getShortName(string $name): string
+    {
+        $shortName = "";
+        $words = explode(" ", $name);
+        foreach ($words as $word) {
+            $shortName .= ucfirst($word[0]);
+        }
+        return $shortName;
     }
 }

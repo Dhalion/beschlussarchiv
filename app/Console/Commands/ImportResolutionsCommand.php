@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Services\Parsers\JSONResolutionParser;
 use Illuminate\Console\Command;
 use App\Services\ResolutionImportService;
 use App\Contracts\ResolutionImportParserInterface;
@@ -15,7 +16,7 @@ class ImportResolutionsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'wiki:import {file} {--council=default}';
+    protected $signature = 'resolution:import {file} {--council=default} {--delimiter=} {--year=}';
 
     /**
      * The console command description.
@@ -24,6 +25,11 @@ class ImportResolutionsCommand extends Command
      */
     protected $description = 'Imports resolutions from a file';
 
+    public string $council;
+
+    public string $delimiter;
+    public string $year;
+
     /**
      * Execute the console command.
      */
@@ -31,14 +37,33 @@ class ImportResolutionsCommand extends Command
     {
         $file = $this->argument('file');
         $council = $this->option('council');
+        $this->delimiter = $this->option('delimiter') ?? ',';
+        $this->year = $this->option('year');
 
         if (!$this->fileExists($file)) {
             $this->error('The file does not exist: ' . $file);
             return;
         }
 
+        $allowedDelimiters = [',', ';', '\t'];
+        if (!empty($delimiter) && !in_array($delimiter, $allowedDelimiters)) {
+            $this->error('Invalid delimiter: ' . $delimiter);
+            return;
+        }
+
+        if (!empty($this->year) && !is_numeric($this->year)) {
+            $this->error('Invalid year: ' . $this->year);
+            return;
+        }
+
+        if ($this->year === null) {
+            $this->warn('No year specified, using current year');
+            $this->year = date('Y');
+        }
+
         if ($council === 'default') {
-            $council = $this->getDefaultCouncilId();
+            $this->info('No council specified, using default council');
+            $this->council = $this->getDefaultCouncilId();
         }
 
         $this->info('Importing resolutions from file: ' . $file);
@@ -49,7 +74,7 @@ class ImportResolutionsCommand extends Command
 
         $this->info('Parsed ' . $parsedResolutions->count() . ' resolutions');
 
-        $importer = new ResolutionImportService($council, date('Y'));
+        $importer = new ResolutionImportService($this->council, $this->year, $this);
         $importer->importResolutions($parsedResolutions);
     }
 
@@ -64,7 +89,9 @@ class ImportResolutionsCommand extends Command
         $extension = pathinfo($file, PATHINFO_EXTENSION);
 
         if ($extension === 'csv') {
-            return new CSVResolutionParserService();
+            return new CSVResolutionParserService($this, $this->delimiter);
+        } else if ($extension === 'json') {
+            return new JSONResolutionParser($this);
         }
 
         throw new \Exception('Unsupported file format: ' . $extension);
@@ -72,6 +99,6 @@ class ImportResolutionsCommand extends Command
 
     private function getDefaultCouncilId(): string
     {
-        return Council::where('name', 'Bundesebene')->firstOrFail()->id;
+        return Council::where('default', true)->firstOrFail()->id;
     }
 }

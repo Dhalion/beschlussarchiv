@@ -5,15 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Category extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, Searchable;
 
     protected $fillable = [
         "name",
         "tag",
         "council_id",
+    ];
+
+    protected $appends = [
+        "tagged_name"
     ];
 
     public function resolutions()
@@ -36,4 +41,18 @@ class Category extends Model
         return $this->belongsTo(User::class, "updatedBy");
     }
 
+    public function getTaggedNameAttribute()
+    {
+        return $this->tag . " - " . $this->name;
+    }
+
+    public function toSearchableArray()
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'tag' => $this->tag,
+            'council_id' => $this->council_id,
+        ];
+    }
 }

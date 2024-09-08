@@ -11,6 +11,7 @@ use Livewire\Attributes\Url;
 
 class MainPage extends Component
 {
+    const DEFAULT_LOAD_AMOUNT = 10;
 
     #[Url(except: '')]
     public ?string $query = "";
@@ -23,44 +24,72 @@ class MainPage extends Component
     #[Url(except: '')]
     public ?string $councilId = "";
 
+    public $advancedSearch = false;
+
+    public $isLoading = false;
+
+    public $amount = self::DEFAULT_LOAD_AMOUNT;
+
+    public function loadMore()
+    {
+        $this->isLoading = true;
+        $this->amount += self::DEFAULT_LOAD_AMOUNT;
+    }
+
+    public function resetLoadAmount()
+    {
+        $this->amount = self::DEFAULT_LOAD_AMOUNT;
+    }
+
 
     public function render()
     {
         $searching = !($this->query == "");
-        $resolutionsQuery = Resolution::query();
+        $searchStartTime = microtime(true);
+        $resolutionsQuery = $this->query == "" ? Resolution::query() : Resolution::search($this->query);
+        $searchTotalTime = microtime(true) - $searchStartTime;
         if (!empty($this->startYear)) {
             $searching = true;
+            $this->advancedSearch = true;
             $resolutionsQuery->where("year", ">=", $this->startYear);
         }
 
         if (!empty($this->endYear)) {
             $searching = true;
+            $this->advancedSearch = true;
             $resolutionsQuery->where("year", "<=", $this->endYear);
         }
 
-        $searching = true;
         if (!empty($this->categoryId)) {
             $searching = true;
+            $this->advancedSearch = true;
             $resolutionsQuery->where("category_id", $this->categoryId);
         }
 
         if (!empty($this->councilId)) {
             $searching = true;
+            $this->advancedSearch = true;
             $resolutionsQuery->where("council_id", $this->councilId);
         }
 
         if ($searching) {
-            $resolutions = Resolution::search($this->query)->get();
+            $resolutions = $resolutionsQuery->take($this->amount)->get();
         } else {
             $resolutions = null;
         }
 
         return view("livewire.main-page", [
-            "categories" => Category::get(),
+            "categories" => Category::withCount('resolutions')
+                ->orderBy('tag')
+                ->get(),
             "resolutions" => $resolutions,
             "councils" => Council::get(),
+            // searchTotal Time is in microseconds, we convert it to milliseconds and show 2 decimal places
+            "searchTotalTime" => number_format($searchTotalTime * 1000, 2),
+            "totalResults" => $resolutions ? $resolutions->count() : 0,
+            "searching" => $searching,
             // if any of the filters are set, we are in advanced search mode true
-            "advancedSearch" => !empty($this->query) || !empty($this->startYear) || !empty($this->endYear) || !empty($this->categoryId) || !empty($this->councilId)
+            "advancedSearch" => $this->advancedSearch,
         ]);
     }
 }
