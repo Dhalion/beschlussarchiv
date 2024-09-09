@@ -12,7 +12,7 @@ class ChangeUserPassword extends Command
      *
      * @var string
      */
-    protected $signature = 'archive:pw-ch {username}';
+    protected $signature = 'user:change-password {username}';
 
     /**
      * The console command description.
