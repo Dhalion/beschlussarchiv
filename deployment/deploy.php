@@ -7,9 +7,7 @@ require __DIR__ . '/../vendor/autoload.php'; // Stellen Sie sicher, dass der Pfa
 
 use Dotenv\Dotenv;
 
-import('inventory.yaml');
-
-
+import(__DIR__ . '/inventory.php');
 
 set('keep_releases', 5);
 
