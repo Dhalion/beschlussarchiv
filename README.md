@@ -97,3 +97,7 @@ Restart=on-failure
 [Install]
 WantedBy=multi-user.target
 ```
+
+## Monitoring
+Basic Resource Monitoring:
+[Prometheus](https://monitor.open-administration.de/graph?g0.expr=sum%20by%20(user)%20(memory_usage%7Buser%3D~%22opa02-tools_beschlussarchiv%22%7D)%20or%20memory_usage%7Buser%3D~%22opa02-tools_beschlussarchiv%22%7D&g0.tab=0&g0.stacked=1&g0.show_exemplars=0&g0.range_input=12h&g0.end_input=2024-09-09%2019%3A24%3A35&g0.moment_input=2024-09-09%2019%3A24%3A35&g1.expr=%20rate(cpu_usage%7Buser%3D~%22opa02-tools_beschlussarchiv%22%7D%5B30s%5D)%20*%20100&g1.tab=0&g1.stacked=1&g1.show_exemplars=0&g1.range_input=12h&g1.end_input=2024-09-07%2019%3A32%3A31&g1.moment_input=2024-09-07%2019%3A32%3A31)
