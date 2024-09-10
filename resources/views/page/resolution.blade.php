@@ -7,7 +7,7 @@
 @section('title', strtoupper($resolution->tag) . "-$resolution->year Beschlussarchiv")
 
 @section('content')
-    <div id="resolution-page" class="flex flex-col w-full md:w-9/12 lg:w-8/12 xl:w-7/12 mx-auto shadow">
+    <div id="resolution-page" class="flex flex-col w-full md:w-9/12 lg:w-8/12 xl:w-7/12 mx-auto shadow pb-5">
 
         {{-- ###        YEAR-TAG & TITLE HEADER        ### --}}
         <div id="resolution-head" class="flex justify-center text-black dark:text-slate-200 w-full flex-grow">
@@ -66,7 +66,10 @@
         <div class="leading-6 antialiased lg:px-10 p-4 mx-auto max-w-full">
             <div class="prose text-justify w-full text-gray-800 dark:text-slate-400">
                 {!! $resolution->text !!}
-            </span>
+                </span>
+            </div>
         </div>
+    </div>
 
-    @endsection
+
+@endsection

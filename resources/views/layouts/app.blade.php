@@ -13,13 +13,18 @@
     <title>@yield('title', 'Beschlussarchiv')</title>
 </head>
 
-<body>
+<body class="flex flex-col min-h-screen">
     @include('components.header')
 
-    {{ $slot ?? '' }}
+    <div class="flex-grow snap-y">
 
-    @yield('content')
+        {{ $slot ?? '' }}
 
+        @yield('content')
+    </div>
+
+
+    @include('components.footer')
 
     @stack('scripts')
 </body>
