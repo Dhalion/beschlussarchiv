@@ -22,7 +22,7 @@
             @endscope
             @scope('cell_actions', $category)
                 <div class="flex flex-row">
-                    <x-button icon="o-pencil" class="btn-ghost btn-xs" disabled />
+                    <x-button icon="o-pencil" class="btn-ghost btn-xs" wire:click="openEditModal('{{ $category->id }}')" />
                     <x-button icon="o-trash" class="btn-ghost btn-xs" wire:click="initDeletion('{{ $category->id }}')" />
                 </div>
             @endscope
@@ -74,6 +74,26 @@
         </x-slot>
     </x-modal>
 
+    {{-- Edit Modal --}}
+    @php
+        /* @var \App\Models\Category $this->selectedCategory */
+    @endphp
+    @if ($this->selectedCategory)
+        <x-modal wire:model="showEditModal" wire:click.away="$set('showEditModal', false)" title="Kategorie bearbeiten"
+            subtitle="{{ $this->selectedCategory->name }}">
+            <div class="p-4 flex flex-col gap-y-2">
+                <x-input type="text" label="Name" wire:model="name" />
+                <x-input type="text" label="Tag" wire:model="tag" class="w-1/3" />
+                <x-file wire:model="image" label="Bild" accept="image/png, image/jpeg">
+                    <img src="{{ asset($selectedCategory->image) }}" alt="logo" class="w-1/2 mx-auto p-3">
+                </x-file>
+                <div class="flex flex-row gap-x-2 pt-3">
+                    <x-button wire:click="$set('showEditModal', false)" class="btn-outline">Abbrechen</x-button>
+                    <x-button wire:click="updateCategory" class="btn-primary" spinner label="Speichern" />
+                </div>
+            </div>
+        </x-modal>
+    @endif
 
     <x-toast />
 </div>

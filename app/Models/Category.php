@@ -15,6 +15,7 @@ class Category extends Model
         "name",
         "tag",
         "council_id",
+        "image"
     ];
 
     protected $appends = [

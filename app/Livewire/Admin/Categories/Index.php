@@ -8,13 +8,15 @@ use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\Features\SupportFileUploads\WithFileUploads;
 use Livewire\WithPagination;
 use Mary\Traits\Toast;
 
 class Index extends Component
 {
-    use WithPagination, Toast;
+    use WithPagination, Toast, WithFileUploads;
 
     #[Url(except: '')]
     public $perPage = 10;
@@ -32,10 +34,13 @@ class Index extends Component
 
     public $sortBy = ['column' => 'name', 'direction' => 'asc'];
 
-    public bool $showCreateModal, $showDeleteModal = false;
+    public bool $showCreateModal, $showDeleteModal, $showEditModal = false;
     public string $name, $tag = '';
 
-    public ?Category $categoryToDelete = null;
+    #[Validate('image|max:1024')] // 1MB Max
+    public $image;
+
+    public ?Category $categoryToDelete, $selectedCategory = null;
 
     public string $categoryToMoveResolutionsTo = '';
     public Collection $possibleDestinationCategories;
@@ -51,6 +56,14 @@ class Index extends Component
 
         $this->categoryToDelete = $category;
         $this->showDeleteModal = true;
+    }
+
+    public function openEditModal($categoryId)
+    {
+        $this->selectedCategory = Category::findOrFail($categoryId);
+        $this->name = $this->selectedCategory->name;
+        $this->tag = $this->selectedCategory->tag;
+        $this->showEditModal = true;
     }
 
     public function deleteCategory($id)
@@ -71,6 +84,33 @@ class Index extends Component
             timeout: 3000
         );
         $this->showDeleteModal = false;
+    }
+
+    public function updateCategory()
+    {
+        $this->validate([
+            'name' => 'required|string',
+            'tag' => 'required|string',
+            'image' => 'nullable|image',
+        ]);
+        if ($this->image) {
+            $this->image->storeAs('images/categoryLogos', $this->selectedCategory->id . '.png');
+        }
+        $this->selectedCategory->update([
+            'name' => $this->name,
+            'tag' => $this->tag,
+            // store the image path in the database
+            'image' => $this->image ? 'images/categoryLogos/' . $this->selectedCategory->id . '.png' : null,
+        ]);
+        $this->showEditModal = false;
+        $this->toast(
+            title: 'Kategorie aktualisiert',
+            description: 'Die Kategorie wurde erfolgreich aktualisiert.',
+            type: 'success',
+            position: 'top-right',
+            icon: 'o-check-circle',
+            timeout: 3000
+        );
     }
 
     public function storeCategory()
