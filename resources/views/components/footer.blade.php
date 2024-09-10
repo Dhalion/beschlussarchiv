@@ -1,6 +1,6 @@
 <footer class="bg-primary text-white flex items-center flex-col mt-10 p-5 w-screen">
     <span>
-        Beschlusswiki by <a href="https://rotes.team">Rotes Team</a>
+        Beschlussarchiv by <a href="https://rotes.team">Rotes Team</a>
     </span>
     <div>
         <span>Commit: {{ config('version.string') }}</span>
