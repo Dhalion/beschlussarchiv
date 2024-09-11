@@ -18,9 +18,13 @@
     <x-form wire:submit.prevent="update">
         <div id="heading" class="flex justify-between">
             <div class="flex gap-x-2 items-center">
-                <h2 class="text-2xl font-bold">Beschluss {{ "$resolution->tag-$resolution->year" }} bearbeiten</h2>
-                <x-icon name="o-eye" class="cursor-pointer w-6" wire:navigate
-                    href="{{ route('frontend.resolution', $resolution) }}" />
+                @if ($resolution->id)
+                    <h2 class="text-2xl font-bold">Beschluss {{ "$resolution->tag-$resolution->year" }} bearbeiten</h2>
+                    <x-icon name="o-eye" class="cursor-pointer w-6" wire:navigate
+                        href="{{ route('frontend.resolution', $resolution) }}" />
+                @else
+                    <h2 class="text-2xl font-bold">Neuen Beschluss anlegen</h2>
+                @endif
             </div>
             <x-button id="submit" type="submit" label="Beschluss Speichern" class="btn-primary text-white"
                 spinner="update" />
@@ -33,26 +37,16 @@
                 <x-input type="text" label="Titel" wire:model="title" id="title" />
             </div>
 
-            <x-select label="Kategorie" wire:model="category_id" name="category" :options="$categories" id="category"
-                option-label="tagged_name">
-                @foreach ($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                @endforeach
-            </x-select>
+            <x-select label="Kategorie" wire:model="categoryId" name="category" :options="$categories" id="category"
+                option-label="tagged_name" option-value="id" />
 
-            <div class="col-start-1 flex justify-between">
-                <x-input type="text" label="Tag" wire:model="tag" name="tag" id="tag" />
-                <x-input type="text" label="Jahr" wire:model="year" name="year" id="year" />
+            <div class="col-start-1 flex justify-between gap-x-3">
+                <x-input type="text" label="Tag" wire:model="tag" name="tag" id="tag" class="w-1/2" />
+                <x-input type="text" label="Jahr" wire:model="year" name="year" id="year" class="w-1/2" />
             </div>
 
-            <x-select label="Status" wire:model="status" name="status" :options="$resolutionStates" id="status">
-                @foreach ($resolutionStates as $state)
-                    @php
-                        /** @var App\Enums\ResolutionStatus $state */
-                    @endphp
-                    <option value="{{ $state }}">{{ $state }}</option>
-                @endforeach
-            </x-select>
+            <x-select label="Status" wire:model="status" name="status" :options="$resolutionStates" id="status"
+                option-value="value" />
 
             <div wire:ignore class="col-span-2">
                 <textarea id="editor"></textarea>

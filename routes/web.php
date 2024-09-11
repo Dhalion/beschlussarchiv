@@ -54,7 +54,11 @@ Route::group([
 
 
     Route::get('/resolutions', ResolutionsIndex::class)->name('admin.resolutions.index');
-    Route::get('/resolutions/create', ResolutionsCreate::class)->name('admin.resolutions.create');
+
+    Route::get('/resolutions/create', ResolutionsEdit::class)
+        ->name('admin.resolutions.create')
+        ->defaults('createNew', true);
+
     Route::get('/resolutions/{resolutionId}', ResolutionsEdit::class)->name('admin.resolutions.edit');
 
 

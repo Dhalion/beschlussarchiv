@@ -19,7 +19,7 @@
             <x-input type="text" icon="o-magnifying-glass" class="input-sm" wire:model.live="search"
                 placeholder="Suche" id="search" />
             <x-button class="btn-primary btn-sm text-white " icon="o-plus"
-                href="{{ route('admin.resolutions.create') }}" wire:navigate>Neuen Beschluss anlegen</x-button>
+                href="{{ route('admin.resolutions.create', null) }}" wire:navigate>Neuen Beschluss anlegen</x-button>
         </div>
 
         <x-table :headers="$headers" :rows="$resolutions" :sort-by="$sortBy" with-pagination per-page="perPage">
