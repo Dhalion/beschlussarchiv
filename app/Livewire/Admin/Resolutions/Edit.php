@@ -74,8 +74,6 @@ class Edit extends Component
             'status' => 'required',
             'categoryId' => 'required|exists:categories,id',
             'councilId' => 'required|exists:councils,id',
-            'applicants' => 'required|array',
-            'editorContent' => 'required|string',
         ]);
 
         $this->resolution->text = $this->editorContent;
