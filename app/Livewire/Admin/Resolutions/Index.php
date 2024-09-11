@@ -7,10 +7,11 @@ use App\Models\Resolution;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
+use Mary\Traits\Toast;
 
 class Index extends Component
 {
-    use WithPagination;
+    use WithPagination, Toast;
 
     #[Url(except: '')]
     public $perPage = 10;
@@ -29,10 +30,20 @@ class Index extends Component
 
     public $sortBy = ['column' => 'tag', 'direction' => 'asc'];
 
-    public function deleteResolution($id)
+    public bool $showDeleteModal = false;
+    public $resolutionBeingDeleted = null;
+
+    public function confirmResolutionDeletion($id)
     {
-        Resolution::findOrFail($id)->delete();
-        session()->flash('success', 'Resolution deleted successfully.');
+        $this->resolutionBeingDeleted = Resolution::findOrFail($id);
+        $this->showDeleteModal = true;
+    }
+
+    public function deleteResolution()
+    {
+        $this->resolutionBeingDeleted->delete();
+        $this->showDeleteModal = false;
+        $this->toast("success", "Beschluss gelöscht.");
     }
 
     public function createResolution()

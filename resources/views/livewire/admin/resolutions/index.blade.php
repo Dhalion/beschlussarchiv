@@ -47,11 +47,29 @@
                 <div class="flex flex-row">
                     <x-button icon="o-pencil" class="btn-ghost btn-xs"
                         href="{{ route('admin.resolutions.edit', $resolution) }}" wire:navigate />
-                    <x-button icon="o-trash" class="btn-ghost btn-xs" wire:click="delete({{ $resolution->id }})" />
+                    <x-button icon="o-trash" class="btn-ghost btn-xs"
+                        wire:click="confirmResolutionDeletion('{{ $resolution->id }}')" />
                     <x-button icon="o-eye" class="btn-ghost btn-xs" href="{{ route('frontend.resolution', $resolution) }}"
                         wire:navigate />
                 </div>
             @endscope
         </x-table>
     </div>
+
+    {{-- Delete resolution Modal --}}
+    @if ($resolutionBeingDeleted)
+        <x-modal wire:model="showDeleteModal" class="backdrop-blur" title="Beschluss löschen?"
+            subtitle="{{ $resolutionBeingDeleted->title }}">
+            <div class="p-4">
+                <p>Sind Sie sicher, dass Sie den Beschluss löschen möchten?</p>
+            </div>
+
+            <div class="flex flex-row gap-x-2 pt-3">
+                <x-button wire:click="$set('showDeleteModal', false)" class="btn-outline">Abbrechen</x-button>
+                <x-button wire:click="deleteResolution" class="btn-primary" spinner label="Löschen" />
+            </div>
+        </x-modal>
+    @endif
+
+    <x-toast />
 </div>
