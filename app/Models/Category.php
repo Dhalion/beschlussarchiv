@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
+use Illuminate\Support\Str;
 
 class Category extends Model
 {
@@ -15,7 +16,8 @@ class Category extends Model
         "name",
         "tag",
         "council_id",
-        "image"
+        "image",
+        "slug",
     ];
 
     protected $appends = [
@@ -45,6 +47,23 @@ class Category extends Model
     public function getTaggedNameAttribute()
     {
         return $this->tag . " - " . $this->name;
+    }
+
+    // Mutator für slug
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = $value;
+        $this->attributes['slug'] = Str::slug($this->tagged_name);
+    }
+
+    // Getter für slug
+    public function getSlugAttribute($value)
+    {
+        if (is_null($value)) {
+            $this->attributes['slug'] = Str::slug($this->tagged_name);
+        }
+
+        return $this->attributes['slug'];
     }
 
     public function toSearchableArray()
