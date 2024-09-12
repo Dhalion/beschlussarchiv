@@ -2,7 +2,7 @@
     <div class="container p-7">
         <div class="row">
             <div class="col-md-12">
-                <h1 class="text-2xl">Dashboard</h1>
+                <h1 class="text-2xl">Dashboard - {{ $council->name }}</h1>
                 <div class="flex mt-5 mb-7 p-3" id="stats">
                     <x-stat title="Beschlüsse" value="{{ $resolutions_count }}" icon="o-document-text" />
                     <x-stat title="Kategorien" value="{{ $categories_count }}" icon="o-tag" />
