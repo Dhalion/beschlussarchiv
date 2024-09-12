@@ -3,7 +3,8 @@
 namespace Deployer;
 
 require 'recipe/laravel.php';
-require __DIR__ . '/../vendor/autoload.php'; // Stellen Sie sicher, dass der Pfad korrekt ist
+
+require dirname(__DIR__) . '/vendor/autoload.php'; // Stellen Sie sicher, dass der Pfad korrekt ist
 
 use Dotenv\Dotenv;
 
