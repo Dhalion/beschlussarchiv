@@ -22,5 +22,10 @@
             <span>{{ $message }}</span>
         @enderror
         <x-button type="submit" label="Login" class="btn-primary btn-sm mt-3" />
+
+        <a href="{{ route('admin.login.keycloak') }}" label="Rote Tools SSO" icon="o-key"
+            class="btn-outline btn-sm mt-3">
+            Rote Tools SSO
+        </a>
     </x-form>
 </div>

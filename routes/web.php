@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Category;
+use App\Http\Controllers\Auth\KeycloakLogin;
 use App\Livewire\MainPage;
 use App\Livewire\Admin\Dashboard;
 use Illuminate\Support\Facades\Route;
@@ -11,7 +11,6 @@ use App\Livewire\Admin\Categories\Index as CategoriesIndex;
 use App\Livewire\Admin\Councils\Create as CouncilsCreate;
 use App\Livewire\Admin\Resolutions\Index as ResolutionsIndex;
 use App\Livewire\Admin\Resolutions\Edit as ResolutionsEdit;
-use App\Livewire\Admin\Resolutions\Create as ResolutionsCreate;
 use App\Livewire\Admin\Councils\Index as CouncilsIndex;
 use App\Livewire\CategoryPage;
 use App\Models\Applicant;
@@ -65,3 +64,7 @@ Route::group([
     Route::get('/councils', CouncilsIndex::class)->name('admin.councils.index')->can('viewAny', \App\Models\Council::class);
     Route::get('/councils/create', CouncilsCreate::class)->name('admin.councils.create')->can('create', \App\Models\Council::class);
 });
+
+Route::get('/auth/keycloak/redirect', [KeycloakLogin::class, 'redirectToKeycloak'])->name('admin.login.keycloak');
+
+Route::get('/auth/keycloak/callback', [KeycloakLogin::class, 'handleKeycloakCallback'])->name('admin.login.keycloak.callback');

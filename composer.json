@@ -15,13 +15,14 @@
         "laravel/framework": "^11.9",
         "laravel/horizon": "^5.24",
         "laravel/scout": "^10.10",
-        "laravel/tinker": "^2.9",
         "laravel/telescope": "^5.2",
+        "laravel/tinker": "^2.9",
         "league/csv": "^9.16.0",
         "livewire/livewire": "^3.5",
         "livewire/volt": "^1.6",
         "meilisearch/meilisearch-php": "^1.9",
         "robsontenorio/mary": "^1.34",
+        "socialiteproviders/keycloak": "^5.3",
         "swaggest/json-schema": "^0.12.42"
     },
     "require-dev": {
