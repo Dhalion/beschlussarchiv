@@ -6,6 +6,7 @@ use App\Models\Applicant;
 use App\Models\Category;
 use App\Models\Council;
 use App\Models\Resolution;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class Dashboard extends Component
@@ -15,7 +16,8 @@ class Dashboard extends Component
 
     public function mount()
     {
-        $this->council = Council::find(session('councilId'));
+        $user = Auth::getUser();
+        $this->council = $user->admin ? Council::first() : $user->councils->first();
     }
 
     public function render()

@@ -20,6 +20,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'keycloak_id',
+        'keycloak_token',
+        'keycloak_refresh_token',
     ];
 
     protected $guarded = [

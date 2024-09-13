@@ -6,9 +6,9 @@ namespace App\Http\Controllers\Auth;
 
 
 
-use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\Controller;
+use App\Models\Council;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -32,10 +32,11 @@ class KeycloakLogin extends Controller
             $newUser->name = $user->name;
             $newUser->email = $user->email;
             $newUser->save();
+            $newUser->councils()->attach(Council::where(('default'), true)->first());
             Auth::login($newUser, true);
         }
 
         // Redirect to the intended URL or a default URL
-        return redirect()->intended('/admin/dashboard'); // Ändern Sie '/admin/dashboard' in die gewünschte URL
+        return redirect()->route('admin.dashboard');
     }
 }
