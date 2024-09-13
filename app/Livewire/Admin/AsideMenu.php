@@ -5,9 +5,11 @@ namespace App\Livewire\Admin;
 use App\Models\Council;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Mary\Traits\Toast;
 
 class AsideMenu extends Component
 {
+    use Toast;
 
     public $councilId = "null";
 
@@ -30,6 +32,18 @@ class AsideMenu extends Component
         $this->councilId = $defaultCouncil->id;
         $this->updateCouncilId();
         return $defaultCouncil->id;
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        $this->toast(
+            "info",
+            "Ausgeloggt",
+            "Du wurdest ausgeloggt",
+            icon: "o-user"
+        );
+        return redirect()->route('frontend.main');
     }
 
     public function render()

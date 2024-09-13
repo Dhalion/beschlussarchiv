@@ -28,7 +28,8 @@
             <span>
                 {{ Auth::user()->name }} ({{ Auth::user()->email }})
             </span>
-            <a href="{{ route('logout') }}" wire:click.prevent="logout">Logout</a>
+            <x-button wire:click.prevent="logout" class="btn">Logout</x-button>
         </div>
     </nav>
+    <x-toast />
 </div>
