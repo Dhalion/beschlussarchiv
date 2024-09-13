@@ -53,6 +53,7 @@ class KeycloakLogin extends Controller
             $newUser->name = $user->name;
             $newUser->email = $user->email;
             $newUser->admin = $isAdmin ? true : false;
+            $newUser->keycloak_id = $user->id;
             $newUser->save();
             $newUser->councils()->attach($councils);
             Auth::login($newUser, true);
@@ -99,6 +100,7 @@ class KeycloakLogin extends Controller
     private function updateUser(User $user, Collection $councils, bool $isAdmin): void
     {
         $user->admin = $isAdmin;
+        $user->keycloak_id = $user->id;
         $user->save();
         $user->councils()->sync($councils->pluck('id')->toArray());
     }

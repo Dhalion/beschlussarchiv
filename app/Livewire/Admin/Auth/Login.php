@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Auth;
 
+use App\Models\User;
 use Livewire\Component;
 
 class Login extends Component
@@ -16,6 +17,12 @@ class Login extends Component
             'email' => 'required|email',
             'password' => 'required',
         ]);
+
+        $user = User::where('email', $this->email)->first();
+        if ($user && $user->keycloak_id) {
+            session()->flash('error', 'SSO Nutzer können sich nicht über das Login-Formular anmelden');
+            return;
+        }
 
         if (auth()->attempt(['email' => $this->email, 'password' => $this->password])) {
             return redirect()->route('admin.dashboard');
