@@ -23,9 +23,9 @@
         @enderror
         <x-button type="submit" label="Login" class="btn-primary btn-sm mt-3" />
 
-        <a href="{{ route('admin.login.keycloak') }}" label="Rote Tools SSO" icon="o-key"
+        <x-button link="{{ route('admin.login.keycloak') }}" no-wire-navigate label="Rote Tools SSO" icon="o-key"
             class="btn-outline btn-sm mt-3">
             Rote Tools SSO
-        </a>
+        </x-button>
     </x-form>
 </div>
