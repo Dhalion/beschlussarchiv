@@ -48,8 +48,10 @@
             <x-select label="Status" wire:model="status" name="status" :options="$resolutionStates" id="status"
                 option-value="value" />
 
-            <div wire:ignore class="col-span-2">
-                <textarea id="editor"></textarea>
+            <div wire:ignore class="col-span-2 flex justify-center my-auto">
+                {{-- loading spinner --}}
+                <x-loading class="text-primary loading-lg self-center mt-10" id="editor-laoding-spinner" />
+                <textarea id="editor" class="hidden"></textarea>
             </div>
         </div>
 
@@ -58,42 +60,45 @@
     <x-toast />
 </div>
 @push('scripts')
-    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
-    <script type="module">
-        const editorConfig = {
-            toolbar: {
-                items: [
-                    "undo",
-                    "redo",
-                    "|",
-                    "bold",
-                    "italic",
-                    "underline",
-                    "|",
-                    "heading",
-                    "|",
-                    "bulletedList",
-                    "numberedList",
-                ],
-                shouldNotGroupWhenFull: false,
-            },
-            initialData: {!! json_encode($resolution->text) !!},
-            list: {
-                properties: {
-                    styles: true,
-                    startIndex: true,
-                    reversed: true,
+    <script>
+        function initializeCKEditor() {
+            const editorConfig = {
+                toolbar: {
+                    items: [
+                        "undo",
+                        "redo",
+                        "|",
+                        "bold",
+                        "italic",
+                        "underline",
+                        "|",
+                        "heading",
+                        "|",
+                        "bulletedList",
+                        "numberedList",
+                    ],
+                    shouldNotGroupWhenFull: false,
                 },
-            },
-        };
-        ClassicEditor.create(document.querySelector("#editor"), editorConfig).then(
-            (editor) => {
-                window.editor = editor;
-                document.querySelector("#submit").addEventListener("click", () => {
-                    const editorData = editor.getData();
-                    @this.set('editorContent', editorData);
+                initialData: {!! json_encode($resolution->text) !!},
+                list: {
+                    properties: {
+                        styles: true,
+                        startIndex: true,
+                        reversed: true,
+                    },
+                },
+            };
+            ClassicEditor
+                .create(document.querySelector('#editor'), editorConfig)
+                .then(() => {
+                    document.querySelector('#editor-laoding-spinner').classList.add('hidden');
+                    const editor = document.querySelector('#editor');
+                    editor.classList.remove('hidden');
+                })
+                .catch(error => {
+                    console.error(error);
                 });
-            }
-        );
+        }
     </script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js" onload="initializeCKEditor()"></script>
 @endpush
