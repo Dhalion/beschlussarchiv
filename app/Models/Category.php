@@ -54,6 +54,7 @@ class Category extends Model
     {
         $this->attributes['name'] = $value;
         $this->attributes['slug'] = Str::slug($this->tagged_name);
+        $this->save();
     }
 
     // Getter für slug
@@ -61,6 +62,7 @@ class Category extends Model
     {
         if (is_null($value)) {
             $this->attributes['slug'] = Str::slug($this->tagged_name);
+            $this->save();
         }
 
         return $this->attributes['slug'];
